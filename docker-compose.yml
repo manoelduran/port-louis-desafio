@@ -1,0 +1,35 @@
+version: "3.9"
+
+services:
+  database:
+    image: postgres
+    container_name: database_portlouis
+    restart: always
+    ports:
+      - "$DATABASE_PORT:5432"
+    hostname: 'database'
+    environment:
+      POSTGRES_USER: $POSTGRES_USER
+      POSTGRES_HOST_AUTH_METHOD: "trust"
+      POSTGRES_PASSWORD: $POSTGRES_PASSWORD
+      POSTGRES_DB: $POSTGRES_DB
+    volumes:
+      - pgdata:/data/postgres
+
+  app:
+    build: .
+    container_name: portlouis
+    restart: always
+    ports:
+      - 3333:3333
+      - 9229:9229
+    volumes:
+      - .:/usr/app
+    links:
+      - database
+    depends_on:
+      - database
+
+volumes:
+  pgdata:
+    driver: local
