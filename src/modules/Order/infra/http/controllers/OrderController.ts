@@ -8,6 +8,9 @@ import { Request, Response } from 'express';
 import { container } from 'tsyringe';
 import { Order } from '@modules/Order/infra/persistence/entity/Order';
 import AppError from '@shared/errors/AppError';
+import { ItemNumberNeedBeUniqueException } from '@modules/Order/exceptions/ItemNumberNeedBeUniqueException';
+import { QueryFailedError } from 'typeorm';
+import { isCelebrateError } from 'celebrate';
 
 
 class OrderController {
@@ -42,7 +45,7 @@ class OrderController {
             throw new OrderNotFoundException();
         };
 
-        return response.status(200).send('Order Deleted!');
+        return response.status(204).send('Order Deleted!');
     };
 };
 

@@ -7,19 +7,23 @@ import { OrderNotFoundException } from '@modules/Order/exceptions/OrderNotFoundE
 import { IOrdersRepository } from '@modules/Order/repositories/IOrdersRepository';
 import { OrderMapper } from '@modules/Order/mapper/OrderMapper';
 import { PostgresDataSource } from "@shared/infra/typeorm/ormconfig";
-
+import { ItemNumberNeedBeUniqueException } from "@modules/Order/exceptions/ItemNumberNeedBeUniqueException";
 @injectable()
 class OrdersRepository implements IOrdersRepository {
     private ormRepository: Repository<Order>
     constructor() {
         this.ormRepository = PostgresDataSource.getRepository(Order);
+    }
+    async save(data: Order): Promise<Order> {
+        const newOrder = await this.ormRepository.save(data);
+        return newOrder;
     };
     async create(data: CreateOrderDTO): Promise<Order> {
         const newOrder = this.ormRepository.create(OrderMapper.toPersistence(data));
-        await this.ormRepository.save(newOrder);
+        await this.save(newOrder);
         return newOrder;
     };
-    async findById(id: string): Promise<OrderNotFoundException |Order> {
+    async findById(id: string): Promise<OrderNotFoundException  |Order> {
         const foundOrder = await this.ormRepository.findOne({
             where: {
                 id: id

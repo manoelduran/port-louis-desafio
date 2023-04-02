@@ -1,11 +1,11 @@
 import { BaseException } from "@shared/domain/BaseException";
+import AppError from "@shared/errors/AppError";
 
-class OrderNotFoundException extends Error implements BaseException {
+class OrderNotFoundException extends AppError implements BaseException {
     public statusCode: number;
 
     constructor() {
       super('Order not found!');
-      this.name = 'OrderNotFoundException';
       this.statusCode = 404;
     };
 };

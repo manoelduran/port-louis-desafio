@@ -1,5 +1,5 @@
 import { Invoice } from "@modules/Invoice/infra/persistence/entity/Invoice";
-import { Column, CreateDateColumn, Entity, JoinColumn, ManyToOne, PrimaryColumn, UpdateDateColumn } from "typeorm";
+import { Column, CreateDateColumn, Entity, JoinColumn, ManyToOne, OneToMany, PrimaryColumn, UpdateDateColumn } from "typeorm";
 
 
 @Entity("orders")
@@ -10,9 +10,8 @@ class Order {
     item_number: number;
     @Column({type: 'varchar'})
     product_code: string;
-    @ManyToOne(() => Invoice, ({order_id}) => order_id)
-    @JoinColumn({ name: 'order_id', referencedColumnName: 'id' })
-    invoice: Invoice;
+    @OneToMany(() => Invoice, (Invoice) => Invoice.order_id)
+    invoice?: Invoice;
     @Column({type: 'integer' })
     product_quantity: number;
     @Column({type: 'decimal', precision: 5, scale: 2})
