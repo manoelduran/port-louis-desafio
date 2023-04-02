@@ -6,8 +6,7 @@ import { IInvoicesRepository } from '@modules/Invoice/repositories/IInvoicesRepo
 import { CreateInvoiceDTO } from '@modules/Invoice/dtos/CreateInvoiceDTO';
 import { InvoiceNotFoundException } from '@modules/Invoice/exceptions/InvoiceNotFoundException';
 import { InvoiceMapper } from '@modules/Invoice/mapper/InvoiceMapper';
-import { PostgresDataSource } from "@shared/infra/typeorm/ormconfig";
-import { OrderNotFoundException } from "@modules/Order/exceptions/OrderNotFoundException";
+import { PostgresDataSource } from "../../../../../../ormconfig";
 
 @injectable()
 class InvoicesRepository implements IInvoicesRepository {

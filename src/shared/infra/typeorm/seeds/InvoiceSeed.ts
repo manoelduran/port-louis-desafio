@@ -1,26 +1,28 @@
 import fs from 'fs';
 import path from 'path';
+import 'express-async-errors';
 import 'reflect-metadata';
-import '@shared/container';
 import 'dotenv/config';
-import { Invoice } from "@modules/Invoice/infra/persistence/entity/Invoice";
-import { Order } from "@modules/Order/infra/persistence/entity/Order";
-import {Seeder, SeederFactoryManager} from 'typeorm-extension';
-import { PostgresDataSource} from "../ormconfig";
+import '@shared/container';
+import { Order } from '@modules/Order/infra/persistence/entity/Order';
+import { Invoice } from '@modules/Invoice/infra/persistence/entity/Invoice';
+import {Seeder, SeederFactoryManager, SeederOptions} from 'typeorm-extension';
 import { FolderDTO } from './dtos/FolderDTO';
-import { DataSource } from 'typeorm';
+import { DataSource, DataSourceOptions } from 'typeorm';
+import { PostgresDataSource } from '../../../../../ormconfig';
 
 
 export default class InvoiceSeed implements Seeder {
   constructor() { }
  public async run(dataSource: DataSource, factoryManager: SeederFactoryManager): Promise<any> {
-  const ola = await this.readAllOrdersFilesInsideAFolder({folder: 'src/assets/Notas'})
+
+  const ola = await this.readAllOrdersFilesInsideAFolder(dataSource, {folder: 'src/assets/Notas'})
   console.log('ola', ola)
    const ordersRepository = PostgresDataSource.getRepository(Order);
    const invoicesRepository = PostgresDataSource.getRepository(Invoice);
   }
 
-  private async readAllOrdersFilesInsideAFolder({ folder }: FolderDTO): Promise<Order[]> {
+  private async readAllOrdersFilesInsideAFolder(dataSource: DataSource,{ folder }: FolderDTO): Promise<Order[]> {
     const files = fs.readdirSync(folder);
     const orders = files?.map(file => {
       const filePath = path.join(folder, file);
@@ -30,7 +32,7 @@ export default class InvoiceSeed implements Seeder {
       return order;
     });
     console.log('orders', orders)
-    await PostgresDataSource.createQueryBuilder().insert().into(Order).values(orders).execute()
+   // await PostgresDataSource.createQueryBuilder().insert().into(Order).values(orders).execute()
     return orders;
   }
   private async readAllInvoicesFilesInsideAFolder({ folder }: FolderDTO): Promise<Invoice[]> {
