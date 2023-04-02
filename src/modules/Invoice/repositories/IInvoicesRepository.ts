@@ -9,6 +9,7 @@ interface IInvoicesRepository {
     findById(id: string): Promise<InvoiceNotFoundException | Invoice>;
     delete(id: string): Promise<void>;
     list(): Promise<Invoice[]>;
+    save(data: Invoice): Promise<Invoice>;
 };
 
 export { IInvoicesRepository };

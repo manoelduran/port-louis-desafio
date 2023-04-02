@@ -1,11 +1,11 @@
 import { BaseException } from "@shared/domain/BaseException";
+import AppError from "@shared/errors/AppError";
 
-class InvoiceAlreadyExistsException extends Error implements BaseException {
+class InvoiceAlreadyExistsException extends AppError implements BaseException {
     public statusCode: number;
 
     constructor() {
       super('Invoice already exists!');
-      this.name = 'InvoiceAlreadyExistsException';
       this.statusCode = 400;
     };
 };

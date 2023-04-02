@@ -1,5 +1,5 @@
 import { Order } from "@modules/Order/infra/persistence/entity/Order";
-import { Column, CreateDateColumn, Entity, JoinColumn, OneToMany, PrimaryColumn, UpdateDateColumn } from "typeorm";
+import { Column, CreateDateColumn, Entity, JoinColumn, ManyToMany, ManyToOne, OneToMany, PrimaryColumn, UpdateDateColumn } from "typeorm";
 
 
 @Entity("invoices")
@@ -8,7 +8,8 @@ class Invoice {
     id: string;
     @Column({ type: 'varchar' ,nullable: false})
     order_id: string;
-    @OneToMany(() => Order, (order) => order.id)
+    @ManyToOne(() => Order, (order) => order.id)
+    @JoinColumn({ name: 'order_id', referencedColumnName: 'id', foreignKeyConstraintName: "order_id" })
     orders: Order[];
     @Column({type: 'integer',nullable: false, unique: true})
     item_number: number;
