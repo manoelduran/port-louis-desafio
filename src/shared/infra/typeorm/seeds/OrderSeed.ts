@@ -1,37 +1,65 @@
 import fs from 'fs';
 import path from 'path';
+import 'express-async-errors';
 import 'reflect-metadata';
-import '@shared/container';
 import 'dotenv/config';
-import { Invoice } from "@modules/Invoice/infra/persistence/entity/Invoice";
-import { Order } from "@modules/Order/infra/persistence/entity/Order";
-import {Seeder, SeederFactoryManager} from 'typeorm-extension';
-import { PostgresDataSource} from "../ormconfig";
+import '@shared/container';
+import unidecode from 'unidecode';
+import { Seeder, SeederFactoryManager, } from 'typeorm-extension';
 import { FolderDTO } from './dtos/FolderDTO';
 import { DataSource } from 'typeorm';
-
+import { PostgresDataSource } from '../../../../../ormconfig';
+import { Order } from '@modules/Order/infra/persistence/entity/Order';
+import { Invoice } from '@modules/Invoice/infra/persistence/entity/Invoice';
+import { CreateOrderDTO } from '@modules/Order/dtos/CreateOrderDTO';
+import { OrderMapper } from '@modules/Order/mapper/OrderMapper';
 
 export default class OrderSeed implements Seeder {
-  constructor() { }
- public async run(dataSource: DataSource, factoryManager: SeederFactoryManager): Promise<any> {
-  const ola = await this.readAllOrdersFilesInsideAFolder({folder: 'src/assets/Pedidos'})
-  console.log('ola', ola)
-   const ordersRepository = dataSource.getRepository(Order);
-   const invoicesRepository = dataSource.getRepository(Invoice);
+  constructor() {
+  }
+  public async run(dataSource: DataSource, factoryManager: SeederFactoryManager): Promise<void> {
+    const result = this.readAllOrdersFilesInsideAFolder(PostgresDataSource, { folder: 'src/assets/Pedidos' })
+    const ormRepository = dataSource.getRepository(Order);
+    console.log('result', result)
+    const savedOrders = ormRepository.create(result.map(OrderMapper.toPersistence))
+    await ormRepository.save(savedOrders)
+
   }
 
-  private async readAllOrdersFilesInsideAFolder({ folder }: FolderDTO): Promise<Order[]> {
+  private readAllOrdersFilesInsideAFolder(dataSource: DataSource, { folder }: FolderDTO): CreateOrderDTO[] {
     const files = fs.readdirSync(folder);
-    const orders = files?.map(file => {
+    const result = [] as CreateOrderDTO[];
+    console.log('files', files)
+    files?.forEach(file => {
+      console.log('file', file)
       const filePath = path.join(folder, file);
+      console.log('filePath', filePath)
       const fileData = fs.readFileSync(filePath, 'utf8');
-      const order = JSON.parse(fileData);
-      console.log('order', order);
-      return order;
+      console.log('fileData', fileData)
+      const fileOrders = fileData.split('\n').map(fileOrder => {
+        const fileOrderWithoutSpecialCharacters = unidecode(fileOrder);
+        return JSON.parse(fileOrderWithoutSpecialCharacters);
+      })
+      const filtereddList = this.removeDuplicateIds(fileOrders);
+      const txtFileObject = {
+        id: file,
+        item: filtereddList
+      } as CreateOrderDTO;
+      result.push(txtFileObject);
     });
-    console.log('orders', orders)
-    await PostgresDataSource.createQueryBuilder().insert().into(Order).values(orders).execute()
-    return orders;
+
+    return result;
+  }
+  private removeDuplicateIds(listaPedidos) {
+    const idsUnicos = new Set(); // conjunto para armazenar ids únicos
+    const listaPedidosUnicos = listaPedidos.filter(pedido => {
+      if (!idsUnicos.has(pedido.numero_item)) { // se o id não estiver no conjunto
+        idsUnicos.add(pedido.numero_item); // adiciona o id ao conjunto
+        return true; // mantém o pedido na lista
+      }
+      return false; // remove o pedido da lista
+    });
+    return listaPedidosUnicos;
   }
   private async readAllInvoicesFilesInsideAFolder({ folder }: FolderDTO): Promise<Invoice[]> {
     return

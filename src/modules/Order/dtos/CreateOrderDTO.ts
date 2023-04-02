@@ -8,7 +8,7 @@ interface Item {
 
 interface CreateOrderDTO {
     id: string;
-    item: Item;
+    item: Item[];
 };
 
 export {CreateOrderDTO};

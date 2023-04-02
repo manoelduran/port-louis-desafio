@@ -1,13 +1,12 @@
 
 import { injectable } from "tsyringe";
 import { Repository,  } from "typeorm";
-import { Order } from '@modules/Order/infra/persistence/entity/Order';
 import { CreateOrderDTO } from '@modules/Order/dtos/CreateOrderDTO';
 import { OrderNotFoundException } from '@modules/Order/exceptions/OrderNotFoundException';
 import { IOrdersRepository } from '@modules/Order/repositories/IOrdersRepository';
 import { OrderMapper } from '@modules/Order/mapper/OrderMapper';
-import { PostgresDataSource } from "@shared/infra/typeorm/ormconfig";
-import { ItemNumberNeedBeUniqueException } from "@modules/Order/exceptions/ItemNumberNeedBeUniqueException";
+import { PostgresDataSource } from "../../../../../../ormconfig";
+import { Order } from "@modules/Order/infra/persistence/entity/Order";
 @injectable()
 class OrdersRepository implements IOrdersRepository {
     private ormRepository: Repository<Order>

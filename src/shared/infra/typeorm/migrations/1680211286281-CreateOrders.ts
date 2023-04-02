@@ -21,19 +21,6 @@ export class CreateOrders1680211286281 implements MigrationInterface {
                         isUnique: true
                     },
                     {
-                        name: "product_code",
-                        type: "varchar"
-                    },
-                    {
-                        name: "product_quantity",
-                        type: "integer",
-                    },
-                    {
-                        name: "unit_value",
-                        type: 'decimal',
-                        precision: 5
-                    },
-                    {
                         name: "created_at",
                         type: "timestamp",
                         default: "now()"
@@ -42,6 +29,16 @@ export class CreateOrders1680211286281 implements MigrationInterface {
                         name: "updated_at",
                         type: "timestamp",
                         default: "now()",
+                    },
+                ],
+                foreignKeys: [
+                    {
+                        name: "FKProduct",
+                        columnNames: ["item_number"],
+                        referencedTableName: "products",
+                        referencedColumnNames: ["item_number"],
+                        onDelete: "CASCADE",
+                        onUpdate: "CASCADE",
                     },
                 ]
             })

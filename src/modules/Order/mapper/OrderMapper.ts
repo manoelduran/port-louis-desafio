@@ -1,6 +1,6 @@
 import { Mapper } from '@shared/domain/Mapper';
-import { Order } from "@modules/Order/infra/persistence/entity/Order";
 import { CreateOrderDTO } from '@modules/Order/dtos/CreateOrderDTO';
+import { Order } from '@modules/Order/infra/persistence/entity/Order';
 
 
 export class OrderMapper implements Mapper<Order> {
@@ -17,12 +17,14 @@ export class OrderMapper implements Mapper<Order> {
     public static toTxt(persistence: Order): CreateOrderDTO {
         return {
             id: persistence.id,
-            item: {
-                number: persistence.item_number,
-                code: persistence.product_code,
-                value: persistence.unit_value,
-                quantity: persistence.product_quantity,
-            },
+            item: [
+                {
+                    number: persistence.item_number,
+                    code: persistence.product_code,
+                    value: persistence.unit_value,
+                    quantity: persistence.product_quantity,
+                },
+            ]
         };
     }
 }
