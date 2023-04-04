@@ -14,7 +14,8 @@ class CreateProductService {
         private productsRepository: IProductsRepository
     ) { }
     async execute(data: CreateProductDTO): Promise<ProductAlreadyExistsException   |Product> {
-        const productAlreadyExists = await this.productsRepository.findByProductCode(data.product_code);
+        console.log('data', data)
+        const productAlreadyExists = await this.productsRepository.findByProductCode(data.codigo_produto);
 
         if (productAlreadyExists instanceof Product) {
             throw new ProductAlreadyExistsException();

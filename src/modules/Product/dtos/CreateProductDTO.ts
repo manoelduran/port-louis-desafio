@@ -1,8 +1,8 @@
 
 
 interface CreateProductDTO {
-    product_code: string;
-    unit_value: number;
+    codigo_produto: string;
+    valor_unitario_produto: number;
 };
 
 export {CreateProductDTO};

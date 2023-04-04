@@ -15,11 +15,13 @@ class ProductsRepository implements IProductsRepository {
         this.ormRepository = PostgresDataSource.getRepository(Product);
     }
     async save(data: Product): Promise<Product> {
-        const newProduct = await this.ormRepository.save(data);
+        console.log('DDAAAATTTAA', data)
+       const newProduct = await this.ormRepository.save(data);
         return newProduct;
     };
     async create(data: CreateProductDTO): Promise<Product> {
         const newProduct = this.ormRepository.create(ProductMapper.toPersistence(data));
+        console.log('ALOHAAAAAAAAAAAAAA', newProduct)
         await this.save(newProduct);
         return newProduct;
     };
@@ -32,6 +34,7 @@ class ProductsRepository implements IProductsRepository {
         if (foundProduct instanceof ProductNotFoundException) {
             throw new ProductNotFoundException();
         };
+        console.log('foundProduct', foundProduct)
         return foundProduct;
     };
     async list(): Promise<Product[]> {

@@ -33,10 +33,10 @@ class ProductController {
         return response.status(201).json(instanceToInstance(product));
     };
     public async delete(request: Request, response: Response): Promise<Response> {
-        const { item_number } = request.params;
+        const { codigo_produto } = request.params;
         const deleteProductService = container.resolve(DeleteProductService);
 
-        const productOrError = await deleteProductService.execute({ item_number: Number(item_number) });
+        const productOrError = await deleteProductService.execute({ codigo_produto: codigo_produto });
         if (!productOrError) {
             throw new ProductNotFoundException();
         };
@@ -44,14 +44,14 @@ class ProductController {
         return response.status(204).send('Product Deleted!');
     };
     public async show(request: Request, response: Response): Promise<Response> {
-        const { item_number } = request.params;
+        const { codigo_produto } = request.params;
         const showProductService = container.resolve(ShowProductService);
 
-        const productOrError = await showProductService.execute({ item_number: Number(item_number) });
-        if (!productOrError) {
+        const productOrError = await showProductService.execute({ codigo_produto: codigo_produto });
+        if (productOrError instanceof ProductNotFoundException) {
             throw new ProductNotFoundException();
         };
-
+        console.log('productOrError', productOrError)
         return response.status(200).json(instanceToInstance(productOrError));
     };
 };

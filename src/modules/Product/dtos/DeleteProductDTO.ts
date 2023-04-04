@@ -1,7 +1,7 @@
 
 
 interface DeleteProductDTO {
-    product_code: string;
+    codigo_produto: string;
 };
 
 export { DeleteProductDTO };

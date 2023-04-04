@@ -1,4 +1,4 @@
-import { MigrationInterface, QueryRunner, Table, TableForeignKey } from "typeorm"
+import { MigrationInterface, QueryRunner, Table } from "typeorm"
 
 export class CreateProduct1680473389496 implements MigrationInterface {
 
@@ -16,8 +16,9 @@ export class CreateProduct1680473389496 implements MigrationInterface {
                     },
                     {
                         name: "unit_value",
-                        type: 'decimal',
-                        precision: 5
+                        type: 'numeric',
+                        precision: 5,
+                        scale: 2
                     },
                     {
                         name: "created_at",

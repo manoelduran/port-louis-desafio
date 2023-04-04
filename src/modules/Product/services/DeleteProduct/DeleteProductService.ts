@@ -10,12 +10,12 @@ class DeleteProductService {
         @inject("ProductsRepository")
         private productsRepository: IProductsRepository
     ) { }
-    async execute({ product_code }: DeleteProductDTO): Promise<ProductNotFoundException | void> {
-        const productExists = await this.productsRepository.findByProductCode(product_code);
+    async execute({ codigo_produto }: DeleteProductDTO): Promise<ProductNotFoundException | void> {
+        const productExists = await this.productsRepository.findByProductCode(codigo_produto);
         if (!productExists) {
             throw new ProductNotFoundException();
         };
-        await this.productsRepository.delete(product_code);
+        await this.productsRepository.delete(codigo_produto);
     };
 };
 

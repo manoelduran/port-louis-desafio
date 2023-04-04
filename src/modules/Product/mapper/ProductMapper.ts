@@ -1,21 +1,23 @@
 import { Mapper } from '@shared/domain/Mapper';
 import { Product } from '@modules/Product/infra/persistence/entity/Product';
-import { CreateProductDTO } from '@modules/Product/dtos/CreateProductDTO';
+import { CreateProductDTO } from '../dtos/CreateProductDTO';
 
 
 export class ProductMapper implements Mapper<Product> {
     public static toPersistence(txtData: CreateProductDTO): Product {
+        console.log('txtData', txtData)
         return {
-            product_code: txtData.product_code,
-            unit_value: txtData.unit_value,
+            product_code: txtData.codigo_produto,
+            unit_value: txtData.valor_unitario_produto,
 
         };
     }
 
     public static toTxt(persistence: Product): CreateProductDTO {
+        console.log('persistence', persistence)
         return {
-           product_code: persistence.product_code,
-           unit_value: persistence.unit_value
+            codigo_produto: persistence.product_code,
+            valor_unitario_produto: persistence.unit_value
         };
     }
 }
