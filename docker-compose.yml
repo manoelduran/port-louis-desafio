@@ -15,7 +15,6 @@ services:
       POSTGRES_DB: $POSTGRES_DB
     volumes:
       - pgdata:/data/postgres
-
   app:
     build: .
     container_name: portlouis

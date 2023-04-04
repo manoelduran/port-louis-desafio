@@ -1,4 +1,5 @@
-'reflect-metadata';
+import 'reflect-metadata';
+import 'dotenv/config';
 import { DataSource, DataSourceOptions } from "typeorm";
 import { SeederOptions } from 'typeorm-extension';
 import MainSeeder from './src/shared/infra/typeorm/seeds/MainSeeder';
@@ -10,8 +11,8 @@ const options = {
    "username": "portlouistest",
    "password": "portlouistest123",
    "database": "portlouisdb",
-   "synchronize": true,
-   "migrationsRun": false,
+   "synchronize": false,
+   "migrationsRun": true,
    "logging": true,
    "migrations": ["./src/shared/infra/typeorm/migrations/*.ts"],
    "seeds": [MainSeeder],
@@ -23,9 +24,14 @@ const options = {
 
 export const PostgresDataSource: DataSource = new DataSource(options);
 
-module.exports = {
+
+
+
+module.exports =
+{
    PostgresDataSource
 }
+
 
 
 
