@@ -1,17 +1,21 @@
-import { Invoice } from "@modules/Invoice/infra/persistence/entity/Invoice";
 import { Product } from "@modules/Product/infra/persistence/entity/Product";
-import { Column, CreateDateColumn, Entity, JoinColumn, ManyToOne, OneToMany, PrimaryColumn, UpdateDateColumn } from "typeorm";
+import { CreateDateColumn, Entity, JoinTable, ManyToMany, PrimaryColumn, UpdateDateColumn } from "typeorm";
+
 
 
 @Entity("orders")
 class Order {
-    @PrimaryColumn({type: 'varchar'})
+    @PrimaryColumn({ type: 'varchar', nullable: false, unique: true })
     id: string;
-    @Column({type: 'integer',nullable: false, unique: true})
-    item_number: number;
-    @ManyToOne(() => Product, (product) => product.item_number)
-    @JoinColumn({ name: 'item_number', referencedColumnName: 'item_number', foreignKeyConstraintName: "item_number" })
-    products?: Product[];
+    @ManyToMany(() => Product, product => product.orders)
+    @JoinTable({
+        name: 'orderproducts',
+        joinColumn: {
+          name: 'order_id',
+          referencedColumnName: 'id',
+        }
+      })
+    products?: Product[]
     @CreateDateColumn()
     created_at?: Date;
     @UpdateDateColumn()

@@ -1,7 +1,5 @@
 
-import { CreateInvoiceDTO } from "@modules/Invoice/dtos/CreateInvoiceDTO";
 import { CreateOrderDTO } from "@modules/Order/dtos/CreateOrderDTO";
-import { ItemNumberNeedBeUniqueException } from "@modules/Order/exceptions/ItemNumberNeedBeUniqueException";
 import { OrderAlreadyExistsException } from "@modules/Order/exceptions/OrderAlreadyExistsException";
 import { Order } from "@modules/Order/infra/persistence/entity/Order";
 import { IOrdersRepository } from "@modules/Order/repositories/IOrdersRepository";
