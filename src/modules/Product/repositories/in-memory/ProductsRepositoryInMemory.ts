@@ -20,8 +20,8 @@ class ProductsRepositoryInMemory implements IProductsRepository {
         this.products.push(data);
         return data;
     }
-    async findById(item_number: number): Promise<ProductNotFoundException | Product> {
-        const product = this.products.find(product => product.item_number === item_number);
+    async findByProductCode(product_code: string): Promise<ProductNotFoundException | Product> {
+        const product = this.products.find(product => product.product_code === product_code);
         if (!product) {
             throw new ProductNotFoundException();
         };
@@ -31,8 +31,8 @@ class ProductsRepositoryInMemory implements IProductsRepository {
         const products = this.products;
         return products;
     };
-    async delete(item_number: number): Promise<void> {
-        const products = this.products.filter(product => product.item_number !== item_number);
+    async delete(product_code: string): Promise<void> {
+        const products = this.products.filter(product => product.product_code !== product_code);
         this.products = products;
     };
 

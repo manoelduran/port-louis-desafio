@@ -11,8 +11,8 @@ class ShowProductService {
         @inject("ProductsRepository")
         private productsRepository: IProductsRepository
     ) { }
-    async execute({ item_number }: ShowProductDTO): Promise<ProductNotFoundException | Product> {
-        const productExists = await this.productsRepository.findById(item_number);
+    async execute({ product_code }: ShowProductDTO): Promise<ProductNotFoundException | Product> {
+        const productExists = await this.productsRepository.findByProductCode(product_code);
         if (!productExists) {
             throw new ProductNotFoundException();
         };

@@ -23,10 +23,10 @@ class ProductsRepository implements IProductsRepository {
         await this.save(newProduct);
         return newProduct;
     };
-    async findById(item_number: number): Promise<ProductNotFoundException  |Product> {
+    async findByProductCode(product_code: string): Promise<ProductNotFoundException  |Product> {
         const foundProduct = await this.ormRepository.findOne({
             where: {
-                item_number: item_number
+                product_code: product_code
             }
         });
         if (foundProduct instanceof ProductNotFoundException) {
@@ -37,8 +37,8 @@ class ProductsRepository implements IProductsRepository {
     async list(): Promise<Product[]> {
         return this.ormRepository.find();
     };
-    async delete(item_number: number): Promise<void> {
-        await this.ormRepository.delete(item_number);
+    async delete(product_code: string): Promise<void> {
+        await this.ormRepository.delete(product_code);
     };
 };
 

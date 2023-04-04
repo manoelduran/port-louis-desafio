@@ -11,10 +11,7 @@ invoiceRoutes.post("/", celebrate({
   [Segments.BODY]: {
     id: Joi.string().alphanum().required(),
     order_id: Joi.string().alphanum().required(),
-    item: Joi.object().keys({
-      number: Joi.number().positive().integer().required(),
-      quantity: Joi.number().integer().positive().required(),
-    }),
+    item_numbers: Joi.array().items(Joi.number().positive().integer().required()).required(),
   },
 }),
   invoiceController.create

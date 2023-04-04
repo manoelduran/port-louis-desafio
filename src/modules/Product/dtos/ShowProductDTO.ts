@@ -1,6 +1,6 @@
 
 interface ShowProductDTO {
-    item_number?: number;
+    product_code?: string;
 };
 
 export {ShowProductDTO};

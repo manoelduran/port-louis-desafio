@@ -10,10 +10,8 @@ const productController = new ProductController();
 
 productRoutes.post("/", celebrate({
   [Segments.BODY]: {
-    item_number: Joi.number().positive().integer().required(),
-    code: Joi.string().alphanum().required(),
-    quantity: Joi.number().integer().positive().required(),
-    value: Joi.number().positive().precision(2)
+    product_code: Joi.string().alphanum().required(),
+    unit_value: Joi.number().positive().precision(2)
   },
 }),
   productController.create
@@ -22,20 +20,20 @@ productRoutes.post("/", celebrate({
 productRoutes.get("/", productController.list);
 
 productRoutes.get(
-  '/:item_number/show',
+  '/:product_code/show',
   celebrate({
     [Segments.PARAMS]: {
-      item_number: Joi.number().positive().integer().required(),
+      product_code: Joi.string().alphanum().required(),
     },
   }),
   productController.show
 );
 
 productRoutes.delete(
-  '/:item_number',
+  '/:product_code',
   celebrate({
     [Segments.PARAMS]: {
-      item_number: Joi.number().positive().integer().required(),
+      product_code: Joi.string().alphanum().required(),
     },
   }),
   productController.delete

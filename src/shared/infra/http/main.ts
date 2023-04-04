@@ -9,6 +9,7 @@ import { router } from '@shared/infra/http/routes';
 import { httpExceptionHandler } from '@shared/infra/http/middlewares/httpExceptionHandler';
 import { errors } from 'celebrate';
 import cors from 'cors';
+import { PostgresDataSource } from '../../../../ormconfig';
 
 
 
@@ -25,7 +26,7 @@ class Main {
         this.middlewares();
         this.routes();
         this.exceptionHandler();
-    
+        console.log('postgres', PostgresDataSource.isInitialized)
     };
     private middlewares() {
         this.app.set("trust proxy", 1);
