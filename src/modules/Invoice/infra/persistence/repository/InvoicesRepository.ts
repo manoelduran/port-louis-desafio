@@ -1,12 +1,13 @@
 
 import { injectable } from "tsyringe";
 import { Repository } from "typeorm";
-import { Invoice } from "@modules/Invoice/infra/persistence/entity/Invoice";
 import { IInvoicesRepository } from '@modules/Invoice/repositories/IInvoicesRepository';
 import { CreateInvoiceDTO } from '@modules/Invoice/dtos/CreateInvoiceDTO';
 import { InvoiceNotFoundException } from '@modules/Invoice/exceptions/InvoiceNotFoundException';
 import { InvoiceMapper } from '@modules/Invoice/mapper/InvoiceMapper';
-import { PostgresDataSource } from "../../../../../../ormconfig";
+import {  PostgresDataSource } from "../../../../../../ormconfig";
+import { Invoice } from "../entity/Invoice";
+
 
 @injectable()
 class InvoicesRepository implements IInvoicesRepository {
