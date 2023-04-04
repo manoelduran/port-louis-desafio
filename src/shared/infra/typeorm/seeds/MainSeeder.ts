@@ -1,9 +1,9 @@
-import { DataSource, DataSourceOptions } from 'typeorm';
+import { DataSource } from 'typeorm';
 import 'express-async-errors';
 import 'reflect-metadata';
 import 'dotenv/config';
 import '@shared/container';
-import {Seeder, SeederFactoryManager, SeederOptions, runSeeder} from 'typeorm-extension';
+import {Seeder, SeederFactoryManager, runSeeder} from 'typeorm-extension';
 import OrderSeed from './OrderSeed';
 import InvoiceSeed from './InvoiceSeed';
 import { PostgresDataSource } from '../../../../../ormconfig';

@@ -4,12 +4,12 @@ import 'express-async-errors';
 import 'reflect-metadata';
 import 'dotenv/config';
 import '@shared/container';
-import { Order } from '@modules/Order/infra/persistence/entity/Order';
-import { Invoice } from '@modules/Invoice/infra/persistence/entity/Invoice';
 import {Seeder, SeederFactoryManager, SeederOptions} from 'typeorm-extension';
 import { FolderDTO } from './dtos/FolderDTO';
 import { DataSource, DataSourceOptions } from 'typeorm';
 import { PostgresDataSource } from '../../../../../ormconfig';
+import { Order } from '@modules/Order/infra/persistence/entity/Order';
+import { Invoice } from '@modules/Invoice/infra/persistence/entity/Invoice';
 
 
 export default class InvoiceSeed implements Seeder {
@@ -18,7 +18,7 @@ export default class InvoiceSeed implements Seeder {
 
   const ola = await this.readAllOrdersFilesInsideAFolder(dataSource, {folder: 'src/assets/Notas'})
   console.log('ola', ola)
-   const ordersRepository = PostgresDataSource.getRepository(Order);
+   const ordersRepository = PostgresDataSource.getMongoRepository(Order);
    const invoicesRepository = PostgresDataSource.getRepository(Invoice);
   }
 

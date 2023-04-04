@@ -21,12 +21,6 @@ export class CreateInvoices1680211323729 implements MigrationInterface {
                         isUnique: true
                     },
                     {
-                        name: "item_number",
-                        type: "integer",
-                        isNullable: false,
-                        isUnique: true
-                    },
-                    {
                         name: "created_at",
                         type: "timestamp",
                         default: "now()"
@@ -43,14 +37,6 @@ export class CreateInvoices1680211323729 implements MigrationInterface {
                         columnNames: ["order_id"],
                         referencedTableName: "orders",
                         referencedColumnNames: ["id"],
-                        onDelete: "CASCADE",
-                        onUpdate: "CASCADE",
-                    },
-                    {
-                        name: "FKProduct",
-                        columnNames: ["item_number"],
-                        referencedTableName: "products",
-                        referencedColumnNames: ["item_number"],
                         onDelete: "CASCADE",
                         onUpdate: "CASCADE",
                     },

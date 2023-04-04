@@ -15,12 +15,6 @@ export class CreateOrders1680211286281 implements MigrationInterface {
                         isUnique: true
                     },
                     {
-                        name: "item_number",
-                        type: "integer",
-                        isNullable: false,
-                        isUnique: true
-                    },
-                    {
                         name: "created_at",
                         type: "timestamp",
                         default: "now()"
@@ -31,16 +25,6 @@ export class CreateOrders1680211286281 implements MigrationInterface {
                         default: "now()",
                     },
                 ],
-                foreignKeys: [
-                    {
-                        name: "FKProduct",
-                        columnNames: ["item_number"],
-                        referencedTableName: "products",
-                        referencedColumnNames: ["item_number"],
-                        onDelete: "CASCADE",
-                        onUpdate: "CASCADE",
-                    },
-                ]
             })
         )
     }

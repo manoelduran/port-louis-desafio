@@ -1,7 +1,7 @@
 
 import { OrderProductAlreadyExistsException } from '@modules/OrderProduct/exceptions/OrderProductAlreadyExistsException';
 import { OrderProductNotFoundException } from '@modules/OrderProduct/exceptions/OrderProductNotFoundException';
-import { CreateOrderProductService } from '@modules/OrderProduct/services/CreateOrderProduct/CreateOrderService';
+import { CreateOrderProductService } from '@modules/OrderProduct/services/CreateOrderProduct/CreateOrderProductService';
 import { DeleteOrderProductService } from '@modules/OrderProduct/services/DeleteOrderProduct/DeleteOrderProductService';
 import { ListOrderProductsService } from '@modules/OrderProduct/services/ListOrderProducts/ListOrderProductsService';
 import { ShowOrderProductsService } from '@modules/OrderProduct/services/ShowOrderProducts/ShowOrderProductsService';

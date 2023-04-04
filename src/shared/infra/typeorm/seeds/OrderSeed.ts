@@ -9,20 +9,28 @@ import { Seeder, SeederFactoryManager, } from 'typeorm-extension';
 import { FolderDTO } from './dtos/FolderDTO';
 import { DataSource } from 'typeorm';
 import { PostgresDataSource } from '../../../../../ormconfig';
-import { Order } from '@modules/Order/infra/persistence/entity/Order';
-import { Invoice } from '@modules/Invoice/infra/persistence/entity/Invoice';
 import { CreateOrderDTO } from '@modules/Order/dtos/CreateOrderDTO';
 import { OrderMapper } from '@modules/Order/mapper/OrderMapper';
+import { Order } from '@modules/Order/infra/persistence/entity/Order';
+import { Invoice } from '@modules/Invoice/infra/persistence/entity/Invoice';
+import { CreateOrderProductDTO } from '@modules/OrderProduct/dtos/CreateOrderProductDTO';
+import { OrderProduct } from '@modules/OrderProduct/infra/persistence/entity/OrderProduct';
+import { txtOrderProduct } from '@types/txtData';
 
 export default class OrderSeed implements Seeder {
   constructor() {
   }
+  public async connect() {
+    await PostgresDataSource.initialize()
+  }
   public async run(dataSource: DataSource, factoryManager: SeederFactoryManager): Promise<void> {
+    await this.connect()
     const result = this.readAllOrdersFilesInsideAFolder(PostgresDataSource, { folder: 'src/assets/Pedidos' })
-    const ormRepository = dataSource.getRepository(Order);
+    const ormRepository = PostgresDataSource.getRepository(Order);
     console.log('result', result)
-    const savedOrders = ormRepository.create(result.map(OrderMapper.toPersistence))
-    await ormRepository.save(savedOrders)
+    console.log('ormRepository', ormRepository)
+    // const savedOrders = ormRepository.create(result.map(OrderMapper.toPersistence))
+    //  await ormRepository.save(savedOrders)
 
   }
 
@@ -40,10 +48,17 @@ export default class OrderSeed implements Seeder {
         const fileOrderWithoutSpecialCharacters = unidecode(fileOrder);
         return JSON.parse(fileOrderWithoutSpecialCharacters);
       })
-      const filtereddList = this.removeDuplicateIds(fileOrders);
-      const txtFileObject = {
+      const filteredList = this.removeDuplicateIds(fileOrders) as txtOrderProduct[];
+      console.log('filtereddList', filteredList)
+      const txtOrderProduct = filteredList.forEach(item => {
+        console.log('item', item)
+        const ola = 
+      console.log('ola', ola)
+      return ola
+      })
+    console.log('txtOrderProduct', txtOrderProduct)
+      const txtOrder = {
         id: file,
-        item: filtereddList
       } as CreateOrderDTO;
       result.push(txtFileObject);
     });

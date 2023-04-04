@@ -1,4 +1,4 @@
-import { MigrationInterface, QueryRunner, Table } from "typeorm"
+import { MigrationInterface, QueryRunner, Table, TableForeignKey } from "typeorm"
 
 export class CreateProduct1680473389496 implements MigrationInterface {
 
@@ -8,19 +8,11 @@ export class CreateProduct1680473389496 implements MigrationInterface {
                 name: "products",
                 columns: [
                     {
-                        name: "item_number",
-                        type: "integer",
+                        name: "product_code",
+                        type: "varchar",
                         isNullable: false,
                         isPrimary: true,
                         isUnique: true
-                    },
-                    {
-                        name: "product_code",
-                        type: "varchar"
-                    },
-                    {
-                        name: "product_quantity",
-                        type: "integer",
                     },
                     {
                         name: "unit_value",
@@ -37,7 +29,7 @@ export class CreateProduct1680473389496 implements MigrationInterface {
                         type: "timestamp",
                         default: "now()",
                     },
-                ]
+                ],
             })
         )
     }
