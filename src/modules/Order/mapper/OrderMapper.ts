@@ -1,6 +1,6 @@
 import { Mapper } from '@shared/domain/Mapper';
-import { CreateOrderDTO } from '@modules/Order/dtos/CreateOrderDTO';
 import { Order } from '@modules/Order/infra/persistence/entity/Order';
+import { CreateOrderDTO } from '../dtos/CreateOrderDTO';
 
 
 export class OrderMapper implements Mapper<Order> {

@@ -1,7 +1,5 @@
 
 
-
-
 interface CreateOrderDTO {
     id: string;
 };

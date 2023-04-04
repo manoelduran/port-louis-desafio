@@ -18,4 +18,24 @@ orderRoutes.post("/", celebrate({
 
 orderRoutes.get("/", orderController.list)
 
+orderRoutes.get(
+  '/:id/show',
+  celebrate({
+    [Segments.PARAMS]: {
+      id: Joi.string().alphanum().required(),
+    },
+  }),
+  orderController.show
+);
+
+orderRoutes.delete(
+  '/:id',
+  celebrate({
+    [Segments.PARAMS]: {
+      id: Joi.string().alphanum().required(),
+    },
+  }),
+  orderController.delete
+);
+
 export { orderRoutes }
