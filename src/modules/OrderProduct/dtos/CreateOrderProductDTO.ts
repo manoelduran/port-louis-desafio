@@ -1,12 +1,11 @@
 
 
 
-
 interface CreateOrderProductDTO {
-    item_number:  number;
-    order_id: string;
-    product_quantity: number;
-    product_code: string;
-};
-
-export { CreateOrderProductDTO };
+    numero_item: number;
+    pedido_id: string;
+    codigo_produto: string;
+    valor_unitario_produto?: number;
+    quantidade_produto: number;
+    };
+    export {CreateOrderProductDTO};

@@ -1,41 +1,56 @@
-import { CreateOrderDTO } from "@modules/Order/dtos/CreateOrderDTO";
 import { OrderNotFoundException } from "@modules/Order/exceptions/OrderNotFoundException";
-import { Order } from "@modules/Order/infra/persistence/entity/Order";
-import { OrderMapper } from "@modules/Order/mapper/OrderMapper";
-import { IOrdersRepository } from "@modules/Order/repositories/IOrdersRepository";
+import { CreateOrderProductDTO } from "@modules/OrderProduct/dtos/CreateOrderProductDTO";
+import { OrderProduct } from "@modules/OrderProduct/infra/persistence/entity/OrderProduct";
+import { IOrderProductsRepository } from "../IOrderProductsRepository";
+import { OrderProductsMapper } from "@modules/OrderProduct/mapper/OrderProductsMapper";
+import { OrderProductNotFoundException } from "@modules/OrderProduct/exceptions/OrderProductNotFoundException";
 
 
-class OrdersRepositoryInMemory implements IOrdersRepository {
-    private orders: Order[];
+class OrderProductsRepositoryInMemory implements IOrderProductsRepository {
+    private orderProducts: OrderProduct[];
     constructor() {
-        this.orders = [];
+        this.orderProducts = [];
     }
-    async create(data: CreateOrderDTO): Promise<Order> {
-        const newOrder = new Order();
-        Object.assign(newOrder, OrderMapper.toPersistence(data));
-        this.save(newOrder);
-        return newOrder;
+    async create(data: CreateOrderProductDTO): Promise<OrderProduct> {
+        const newOrderProduct = new OrderProduct();
+        Object.assign(newOrderProduct, OrderProductsMapper.toPersistence(data));
+        this.save(newOrderProduct);
+        return newOrderProduct;
     };
-    async save(data: Order): Promise<Order> {
-        this.orders.push(data);
+    async save(data: OrderProduct): Promise<OrderProduct> {
+        this.orderProducts.push(data);
         return data;
     };
-    async findById(id: string): Promise<OrderNotFoundException | Order> {
-        const order = this.orders.find(order => order.id === id);
-        if (!order) {
+    async findByItemNumber(item_number: number): Promise<OrderProduct | OrderProductNotFoundException> {
+        const orderProduct = this.orderProducts.find(order => order.item_number === item_number);
+        if (!orderProduct) {
             throw new OrderNotFoundException();
         };
-        return order;
+        return orderProduct;
+    }
+    async findByOrderId(order_id: string): Promise<OrderProduct | OrderProductNotFoundException> {
+        const orderProduct = this.orderProducts.find(order => order.order_id === order_id);
+        if (!orderProduct) {
+            throw new OrderNotFoundException();
+        };
+        return orderProduct;
+    }
+    async findByProductCode(product_code: string): Promise<OrderProduct | OrderProductNotFoundException> {
+        const orderProduct = this.orderProducts.find(order => order.product_code === product_code);
+        if (!orderProduct) {
+            throw new OrderNotFoundException();
+        };
+        return orderProduct;
+    }
+    async list(): Promise<OrderProduct[]> {
+        const orderProducts = this.orderProducts;
+        return orderProducts;
     };
-    async list(): Promise<Order[]> {
-        const orders = this.orders;
-        return orders;
-    };
-    async delete(id: string): Promise<void> {
-        const orders = this.orders.filter(order => order.id !== id);
-        this.orders = orders;
+    async delete(item_number: number): Promise<void> {
+        const orderProduct = this.orderProducts.filter(order => order.item_number !== item_number);
+        this.orderProducts = orderProduct;
     };
 
 };
 
-export { OrdersRepositoryInMemory };
+export { OrderProductsRepositoryInMemory };

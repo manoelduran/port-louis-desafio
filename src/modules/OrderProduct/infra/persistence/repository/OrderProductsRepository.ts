@@ -4,9 +4,9 @@ import { Repository, } from "typeorm";
 import { PostgresDataSource } from "../../../../../../ormconfig";
 import { OrderProduct } from "../entity/OrderProduct";
 import { OrderProductNotFoundException } from "@modules/OrderProduct/exceptions/OrderProductNotFoundException";
-import { CreateOrderProductDTO } from "@modules/OrderProduct/dtos/CreateOrderProductDTO";
 import { IOrderProductsRepository } from "@modules/OrderProduct/repositories/IOrderProductsRepository";
 import { OrderProductsMapper } from "@modules/OrderProduct/mapper/OrderProductsMapper";
+import { CreateOrderProductDTO } from "@modules/OrderProduct/dtos/CreateOrderProductDTO";
 @injectable()
 class OrderProductsRepository implements IOrderProductsRepository {
     private ormRepository: Repository<OrderProduct>
@@ -18,12 +18,13 @@ class OrderProductsRepository implements IOrderProductsRepository {
         const newOrderProducts = await this.ormRepository.save(data);
         return newOrderProducts;
     };
-    async create(data: CreateOrderProductDTO): Promise<OrderProduct> {
-        const newOrderProducts = this.ormRepository.create(OrderProductsMapper.toPersistence(data));
+    async create(txtData?: CreateOrderProductDTO): Promise<OrderProduct> {
+        const newOrderProducts = this.ormRepository.create(OrderProductsMapper.toPersistence(txtData));
         await this.save(newOrderProducts);
         return newOrderProducts;
     };
     async findByItemNumber(item_number: number): Promise<OrderProduct | OrderProductNotFoundException> {
+
         const foundOrderProducts = await this.ormRepository.findOne({
             where: {
                 item_number: item_number
@@ -60,7 +61,8 @@ class OrderProductsRepository implements IOrderProductsRepository {
         return this.ormRepository.find();
     };
     async delete(item_number: number): Promise<void> {
-        await this.ormRepository.delete(item_number);
+         this.ormRepository.delete(item_number);
+
     };
 };
 

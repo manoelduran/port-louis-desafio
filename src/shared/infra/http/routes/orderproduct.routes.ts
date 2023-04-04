@@ -7,13 +7,12 @@ import { Router } from "express";
 const orderProductRoutes = Router();
 
 const orderProductController = new OrderProductController();
-
 orderProductRoutes.post("/", celebrate({
   [Segments.BODY]: {
-    item_number: Joi.number().positive().integer().required(),
-    order_id: Joi.string().alphanum().required(),
-    product_quantity: Joi.number().integer().positive().required(),
-    product_code: Joi.string().alphanum().required(),
+    numero_item: Joi.number().positive().integer().required(),
+    pedido_id: Joi.string().alphanum().required(),
+    quantidade_produto: Joi.number().integer().positive().required(),
+    codigo_produto: Joi.string().alphanum().required(),
   },
 }),
   orderProductController.create
@@ -22,20 +21,20 @@ orderProductRoutes.post("/", celebrate({
 orderProductRoutes.get("/", orderProductController.list)
 
 orderProductRoutes.get(
-  '/:item_number/show',
+  '/:numero_item/show',
   celebrate({
     [Segments.PARAMS]: {
-      item_number: Joi.number().positive().integer().required(),
+      numero_item: Joi.number().positive().integer().required(),
     },
   }),
   orderProductController.show
 );
 
 orderProductRoutes.delete(
-  '/:item_number',
+  '/:numero_item',
   celebrate({
     [Segments.PARAMS]: {
-      item_number: Joi.number().positive().integer().required(),
+      numero_item: Joi.number().positive().integer().required(),
     },
   }),
   orderProductController.delete

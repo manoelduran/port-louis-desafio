@@ -1,8 +1,5 @@
 
-import { CreateOrderDTO } from "@modules/Order/dtos/CreateOrderDTO";
-import { OrderAlreadyExistsException } from "@modules/Order/exceptions/OrderAlreadyExistsException";
-import { Order } from "@modules/Order/infra/persistence/entity/Order";
-import { IOrdersRepository } from "@modules/Order/repositories/IOrdersRepository";
+
 import { CreateOrderProductDTO } from "@modules/OrderProduct/dtos/CreateOrderProductDTO";
 import { OrderProductAlreadyExistsException } from "@modules/OrderProduct/exceptions/OrderProductAlreadyExistsException";
 import { OrderProduct } from "@modules/OrderProduct/infra/persistence/entity/OrderProduct";
@@ -17,7 +14,7 @@ class CreateOrderProductService {
         private orderProductsRepository: IOrderProductsRepository
     ) { }
     async execute(data: CreateOrderProductDTO): Promise<OrderProductAlreadyExistsException | OrderProduct> {
-        const orderProductsAlreadyExists = await this.orderProductsRepository.findByItemNumber(data.item_number);
+        const orderProductsAlreadyExists = await this.orderProductsRepository.findByItemNumber(data.numero_item);
 
         if (orderProductsAlreadyExists instanceof OrderProduct) {
             throw new OrderProductAlreadyExistsException();

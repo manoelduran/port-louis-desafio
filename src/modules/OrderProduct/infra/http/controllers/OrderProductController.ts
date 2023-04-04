@@ -1,6 +1,7 @@
 
 import { OrderProductAlreadyExistsException } from '@modules/OrderProduct/exceptions/OrderProductAlreadyExistsException';
 import { OrderProductNotFoundException } from '@modules/OrderProduct/exceptions/OrderProductNotFoundException';
+import { OrderProductsMapper } from '@modules/OrderProduct/mapper/OrderProductsMapper';
 import { CreateOrderProductService } from '@modules/OrderProduct/services/CreateOrderProduct/CreateOrderProductService';
 import { DeleteOrderProductService } from '@modules/OrderProduct/services/DeleteOrderProduct/DeleteOrderProductService';
 import { ListOrderProductsService } from '@modules/OrderProduct/services/ListOrderProducts/ListOrderProductsService';
@@ -34,26 +35,24 @@ class OrderProductController {
         return response.status(201).json(instanceToInstance(orderProduct));
     };
     public async delete(request: Request, response: Response): Promise<Response> {
-        const { item_number } = request.params;
+        const { numero_item } = request.params;
         const deleteOrderProductService = container.resolve(DeleteOrderProductService);
 
-        const orderProductOrError = await deleteOrderProductService.execute({ item_number: Number(item_number) });
-        if (!orderProductOrError) {
+        const orderProductOrError = await deleteOrderProductService.execute({ item_number: Number(numero_item) });
+        if (orderProductOrError instanceof  OrderProductNotFoundException) {
             throw new OrderProductNotFoundException();
         };
 
         return response.status(204).send('Order Product Deleted!');
     };
     public async show(request: Request, response: Response): Promise<Response> {
-        const { item_number } = request.params;
+        const { numero_item } = request.params;
         const showOrderProductsService = container.resolve(ShowOrderProductsService);
-
-        const orderProductOrError = await showOrderProductsService.execute({ item_number: Number(item_number) });
-        if (!orderProductOrError) {
+        const orderProductOrError = await showOrderProductsService.execute({ item_number: Number(numero_item) });
+        if (orderProductOrError instanceof OrderProductNotFoundException) {
             throw new OrderProductNotFoundException();
         };
-
-        return response.status(204).send('Order Product Deleted!');
+        return response.status(200).json(OrderProductsMapper.toTxt(orderProductOrError));
     };
 };
 
