@@ -4,16 +4,12 @@ import 'reflect-metadata';
 import 'dotenv/config';
 import '@shared/container';
 import {Seeder, SeederFactoryManager, runSeeder} from 'typeorm-extension';
-import OrderSeed from './OrderSeed';
-import InvoiceSeed from './InvoiceSeed';
 import { PostgresDataSource } from '../../../../../ormconfig';
+import StarterDBSeed from './StarterDBSeed';
 
 export default class MainSeeder implements Seeder {
     public async run(dataSource: DataSource, factoryManager: SeederFactoryManager): Promise<any> {
-            console.log('OLA')
-                await runSeeder(PostgresDataSource, OrderSeed)
-           // await runSeeder(PostgresDataSource, InvoiceSeed)
-
+                await runSeeder(PostgresDataSource, StarterDBSeed)
     }
 
 }

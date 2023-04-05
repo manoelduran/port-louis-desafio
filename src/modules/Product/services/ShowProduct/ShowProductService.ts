@@ -16,7 +16,6 @@ class ShowProductService {
         if (!productExists) {
             throw new ProductNotFoundException();
         };
-        console.log('productExists', productExists)
         return productExists;
     };
 };

@@ -15,16 +15,10 @@ class CreateInvoiceService {
     constructor(
         @inject("InvoicesRepository")
         private invoicesRepository: IInvoicesRepository,
-        @inject("OrdersRepository")
-        private ordersRepository: IOrdersRepository
     ) { }
-    async execute(data: CreateInvoiceDTO): Promise<OrderNotFoundException |  InvoiceAlreadyExistsException | Invoice> {
-        const orderIdExists = await this.ordersRepository.findById(data.order_id);
-        if(!orderIdExists) {
-            throw new OrderNotFoundException();
-        }
+    async execute(data: CreateInvoiceDTO): Promise<InvoiceAlreadyExistsException | Invoice> {
         const invoiceAlreadyExists = await this.invoicesRepository.findById(data.id);
-        if (invoiceAlreadyExists) {
+        if (invoiceAlreadyExists instanceof Invoice) {
            throw new InvoiceAlreadyExistsException();
         };
         const newInvoice = await this.invoicesRepository.create(data);

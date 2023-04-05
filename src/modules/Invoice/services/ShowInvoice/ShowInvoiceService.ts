@@ -12,21 +12,11 @@ class ShowInvoiceService {
         @inject("InvoicesRepository")
         private invoicesRepository: IInvoicesRepository
     ) { }
-    async execute({ id, order_id }: ShowInvoiceDTO): Promise<InvoiceNotFoundException | Invoice> {
-        let invoiceExists: Invoice;
-        if (id && !order_id) {
-            const invoiceExists = await this.invoicesRepository.findById(id)
-            if (!invoiceExists) {
-                throw new InvoiceNotFoundException();
-            };
-
-        }
-        if (order_id && !id) {
-            const invoiceExists = await this.invoicesRepository.findByOrder(order_id)
-            if (!invoiceExists) {
-                throw new InvoiceNotFoundException();
-            };
-        }
+    async execute({ id, }: ShowInvoiceDTO): Promise<InvoiceNotFoundException | Invoice> {
+        const invoiceExists = await this.invoicesRepository.findById(id)
+        if (invoiceExists instanceof InvoiceNotFoundException) {
+            throw new InvoiceNotFoundException();
+        };
         return invoiceExists;
     };
 };

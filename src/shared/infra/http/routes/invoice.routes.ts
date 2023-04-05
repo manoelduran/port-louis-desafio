@@ -10,13 +10,31 @@ const invoiceController = new InvoiceController();
 invoiceRoutes.post("/", celebrate({
   [Segments.BODY]: {
     id: Joi.string().alphanum().required(),
-    order_id: Joi.string().alphanum().required(),
-    item_numbers: Joi.array().items(Joi.number().positive().integer().required()).required(),
   },
 }),
   invoiceController.create
 );
 
 invoiceRoutes.get("/", invoiceController.list)
+
+invoiceRoutes.get(
+  '/:id/show',
+  celebrate({
+    [Segments.PARAMS]: {
+      id: Joi.string().alphanum().required(),
+    },
+  }),
+  invoiceController.show
+);
+
+invoiceRoutes.delete(
+  '/:id',
+  celebrate({
+    [Segments.PARAMS]: {
+      id: Joi.string().alphanum().required(),
+    },
+  }),
+  invoiceController.delete
+);
 
 export { invoiceRoutes }

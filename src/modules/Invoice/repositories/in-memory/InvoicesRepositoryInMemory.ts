@@ -1,6 +1,7 @@
 import { CreateInvoiceDTO } from "@modules/Invoice/dtos/CreateInvoiceDTO";
 import { InvoiceNotFoundException } from "@modules/Invoice/exceptions/InvoiceNotFoundException";
 import { Invoice } from "@modules/Invoice/infra/persistence/entity/Invoice";
+import { InvoiceMapper } from "@modules/Invoice/mapper/InvoiceMapper";
 import { IInvoicesRepository } from "@modules/Invoice/repositories/IInvoicesRepository";
 
 
@@ -8,19 +9,16 @@ class InvoiceRepositoryInMemory implements IInvoicesRepository {
     private invoices: Invoice[];
     constructor() {
         this.invoices = [];
-    };
+    }
     async create(data: CreateInvoiceDTO): Promise<Invoice> {
         const newInvoice = new Invoice();
-        Object.assign(newInvoice, data);
-        this.invoices.push(newInvoice);
+        Object.assign(newInvoice, InvoiceMapper.toPersistence(data));
+        this.save(newInvoice);
         return newInvoice;
     };
-    async findByOrder(order_id: string): Promise<InvoiceNotFoundException | Invoice> {
-        const invoice = this.invoices.find(invoice => invoice.order_id === order_id);
-        if (!invoice) {
-            throw new InvoiceNotFoundException();
-        };
-        return invoice;
+    async save(data: Invoice): Promise<Invoice> {
+         this.invoices.push(data);
+        return data;
     };
     async findById(id: string): Promise<InvoiceNotFoundException | Invoice> {
         const invoice = this.invoices.find(invoice => invoice.id === id);

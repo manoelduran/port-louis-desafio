@@ -25,23 +25,13 @@ class InvoicesRepository implements IInvoicesRepository {
         await this.save(newInvoice);
         return newInvoice;
     };
-    async findByOrder(order_id: string): Promise<InvoiceNotFoundException | Invoice> {
-        const foundInvoice = await this.ormRepository.findOne({
-            where: {
-                id: order_id
-            }
-        });
-        if (foundInvoice instanceof InvoiceNotFoundException) {
-            throw new InvoiceNotFoundException();
-        };
-        return foundInvoice;
-    };
     async findById(id: string): Promise<InvoiceNotFoundException | Invoice> {
         const foundInvoice = await this.ormRepository.findOne({
             where: {
                 id: id
             }
         });
+
         if (foundInvoice instanceof InvoiceNotFoundException) {
             throw new InvoiceNotFoundException();
         };

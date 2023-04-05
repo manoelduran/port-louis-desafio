@@ -1,0 +1,22 @@
+{
+    Como rodar o projeto?
+        - Requisitos:
+            1. Docker & Docker Compose instalados na maquina;
+            2. Criar um arquivo .env com as seguientes variaveis de ambiente:
+                PORT=3333;
+                POSTGRES_USER="portlouistest";
+                POSTGRES_PASSWORD="portlouistest123";
+                POSTGRES_DB="portlouisdb";
+                DATABASE_PORT=5432;
+            3. Criei um arquivo no Insomnia para testar a API, o arquivo vai estar dentro da pasta ./src/assets/jsons;
+            4. Utilizei o aplicativo Beekeeper Studio para visualizar o banco inicializado dentro do docker, caso queira se conectar utilizando outro, inserir as configs:
+                POSTGRES_USER="portlouistest";
+                POSTGRES_PASSWORD="portlouistest123";
+                POSTGRES_DB="portlouisdb";
+                DATABASE_PORT=5432;
+            5. Para rodar o projeto, seguir os passos abaixo:
+                5.1 No seu terminal, rode o comando: docker-compose up --build -d;
+                5.2 Para escutar o container do seu app execute: docker logs portlouis -f;
+                5.3 Para rodar as migrations execute o comando: yarn docker:migration:run;
+                5.3 Para alimentar o banco de dados com os arquivos fornecidos de notas e pedidos execute o comando do seed: yarn docker:seed;
+}

@@ -15,12 +15,6 @@ export class CreateInvoices1680211323729 implements MigrationInterface {
                         isUnique: true
                     },
                     {
-                        name: "order_id",
-                        type: "varchar",
-                        isNullable: false,
-                        isUnique: true
-                    },
-                    {
                         name: "created_at",
                         type: "timestamp",
                         default: "now()"
@@ -31,16 +25,6 @@ export class CreateInvoices1680211323729 implements MigrationInterface {
                         default: "now()",
                     },
                 ],
-                foreignKeys: [
-                    {
-                        name: "FKOrder",
-                        columnNames: ["order_id"],
-                        referencedTableName: "orders",
-                        referencedColumnNames: ["id"],
-                        onDelete: "CASCADE",
-                        onUpdate: "CASCADE",
-                    },
-                ]
             })
         )
     };

@@ -37,11 +37,10 @@ class ProductController {
         const deleteProductService = container.resolve(DeleteProductService);
 
         const productOrError = await deleteProductService.execute({ codigo_produto: codigo_produto });
-        if (!productOrError) {
+        if (productOrError instanceof ProductNotFoundException) {
             throw new ProductNotFoundException();
         };
-
-        return response.status(204).send('Product Deleted!');
+        return response.status(204).send('Product deleted!');
     };
     public async show(request: Request, response: Response): Promise<Response> {
         const { codigo_produto } = request.params;
@@ -51,7 +50,6 @@ class ProductController {
         if (productOrError instanceof ProductNotFoundException) {
             throw new ProductNotFoundException();
         };
-        console.log('productOrError', productOrError)
         return response.status(200).json(instanceToInstance(productOrError));
     };
 };
