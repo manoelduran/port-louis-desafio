@@ -26,7 +26,6 @@ class Main {
         this.middlewares();
         this.routes();
         this.exceptionHandler();
-        console.log('postgres', PostgresDataSource.isInitialized)
     };
     private middlewares() {
         this.app.set("trust proxy", 1);

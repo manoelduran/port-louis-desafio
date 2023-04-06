@@ -4,7 +4,7 @@ import { CreateOrderProductDTO } from "@modules/OrderProduct/dtos/CreateOrderPro
 
 
 export class FileHelper {
-    static removeOrderProductDuplicateIds(filesOrder: CreateOrderProductDTO[]) {
+    static removeOrderProductDuplicateIds(filesOrder: (Omit<CreateOrderProductDTO, "valor_unitario_produto"> & { valor_unitario_produto: string })[]) {
         const uniqueIds = new Set();
         const orderUniquesArray = filesOrder.filter(order => {
             if (!uniqueIds.has(order.numero_item)) {

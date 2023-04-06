@@ -21,41 +21,46 @@ import { InvoiceMapper } from '@modules/Invoice/mapper/InvoiceMapper';
 import { InvoiceOrder } from '@modules/InvoiceOrder/infra/persistence/entity/InvoiceOrder';
 import { InvoiceOrdersMapper } from '@modules/InvoiceOrder/mapper/InvoiceOrdersMapper';
 import { FileHelper } from '@shared/helpers/fileHelper';
+import { injectable } from 'tsyringe';
 
-
+@injectable()
 export default class StarterDBSeed implements Seeder {
   constructor() {
   }
-  public async connect() {
-    await PostgresDataSource.initialize()
 
-  }
   public async run(dataSource: DataSource, factoryManager?: SeederFactoryManager): Promise<void> {
-    await this.connect()
     const result1 = this.readAllInvoicesFilesInsideAFolder({ folder: 'src/assets/Notas' })
     const result2 = this.readAllOrdersFilesInsideAFolder({ folder: 'src/assets/Pedidos' })
-    console.log('NOTASSSSSSSSSSSSSS', result1)
-    console.log('PEDIDOSSSSSSSSSSSSS', result2)
-    /* const ormOrderProductsRepository = PostgresDataSource.getRepository(OrderProduct)
-     result.toPersistenceOrderProjects.forEach((orderProduct: OrderProduct) => {
- 
+    const ormOrdersRepository = PostgresDataSource.getRepository(Order)
+    const ormProductsRepository = PostgresDataSource.getRepository(Product)
+    const ormOrderProductsRepository = PostgresDataSource.getRepository(OrderProduct)
+    for (const order of result2.toPersistenceOrders) {
+      const newOrder = ormOrdersRepository.create(order)
+      const savedOrder = await ormOrdersRepository.save(newOrder)
+      console.log('saved', savedOrder)
+    }
+    for (const product of result2.toPersistenceProducts) {
+      const newProduct = ormProductsRepository.create(product)
+      const savedProduct = await ormProductsRepository.save(newProduct)
+      console.log('savedProduct', savedProduct)
+    }
+    for (const orderProduct of result2.toPersistenceOrderProjects) {
       const newOrderProduct = ormOrderProductsRepository.create(orderProduct)
-      console.log('newOrderProduct', newOrderProduct)
-     ormOrderProductsRepository.save(newOrderProduct)
-     })
- 
-     await result.toPersistenceOrders.forEach(async (order: Order) => {
- 
-       PostgresDataSource.getMetadata("orders")
-       const ormOrdersRepository = PostgresDataSource.getRepository(Order)
-       ormOrdersRepository.create(order)
-     })
-     await result.toPersistenceProducts.forEach(async (product: Product) => {
-       PostgresDataSource.getMetadata("products")
-       const ormProductsRepository = PostgresDataSource.getRepository(Product)
-       ormProductsRepository.create(product)
-     })
- */
+      const savedOrderProduct = await ormOrderProductsRepository.save(newOrderProduct)
+      console.log('saved', savedOrderProduct)
+    }
+    const ormInvoicesRepository = PostgresDataSource.getRepository(Invoice)
+    const ormInvoiceOrdersRepository = PostgresDataSource.getRepository(InvoiceOrder)
+    for (const invoice of result1.toPersistenceInvoices) {
+      const newInvoice = ormInvoicesRepository.create(invoice)
+      const savedInvoice = await ormInvoicesRepository.save(newInvoice)
+      console.log('saved', savedInvoice)
+    }
+    for (const invoiceOrder of result1.toPersistenceInvoiceOrders) {
+      const newinvoiceOrder = ormInvoiceOrdersRepository.create(invoiceOrder)
+      const savedinvoiceOrder = await ormInvoiceOrdersRepository.save(newinvoiceOrder)
+      console.log('saved', savedinvoiceOrder)
+    }
   }
 
   private readAllOrdersFilesInsideAFolder({ folder }: FolderDTO): any {
@@ -70,12 +75,17 @@ export default class StarterDBSeed implements Seeder {
         const fileOrderWithoutSpecialCharacters = unidecode(fileOrder);
         return JSON.parse(fileOrderWithoutSpecialCharacters);
       })
-      const filteredList = FileHelper.removeOrderProductDuplicateIds(fileOrders) as CreateOrderProductDTO[];
-      filteredList.forEach(item => {
+      const filteredList = FileHelper.removeOrderProductDuplicateIds(fileOrders);
+      filteredList.forEach(_item => {
+        const item = {
+          ..._item,
+          valor_unitario_produto: Number(_item.valor_unitario_produto.replace(",", "."))
+        }
+        console.log('item', item)
         const formattedFile = FileHelper.removeTxtExtension(file)
         const toPersistenceOrderProject = OrderProductsMapper.toPersistence({ ...item, pedido_id: formattedFile });
         const toPersistenceOrder = OrderMapper.toPersistence({ id: toPersistenceOrderProject.order_id });
-        const toPersistenceProduct = ProductMapper.toPersistence({ codigo_produto: item.codigo_produto, valor_unitario_produto: item.valor_unitario_produto })
+        const toPersistenceProduct = ProductMapper.toPersistence({ codigo_produto: item.codigo_produto, valor_unitario_produto: Number(item.valor_unitario_produto) })
         toPersistenceOrderProjects.push(toPersistenceOrderProject)
         toPersistenceOrders.push(toPersistenceOrder)
         toPersistenceProducts.push(toPersistenceProduct)
@@ -87,7 +97,7 @@ export default class StarterDBSeed implements Seeder {
   }
 
 
-  private  readAllInvoicesFilesInsideAFolder({ folder }: FolderDTO): any {
+  private readAllInvoicesFilesInsideAFolder({ folder }: FolderDTO): any {
     let toPersistenceInvoices = [] as Invoice[];
     let toPersistenceInvoiceOrders = [] as InvoiceOrder[]
     const files = fs.readdirSync(folder);
