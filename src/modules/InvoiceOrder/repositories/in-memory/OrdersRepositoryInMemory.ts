@@ -1,9 +1,9 @@
 import { OrderNotFoundException } from "@modules/Order/exceptions/OrderNotFoundException";
 import { CreateOrderProductDTO } from "@modules/OrderProduct/dtos/CreateOrderProductDTO";
 import { OrderProduct } from "@modules/OrderProduct/infra/persistence/entity/OrderProduct";
-import { IOrderProductsRepository } from "../IOrderProductsRepository";
 import { OrderProductsMapper } from "@modules/OrderProduct/mapper/OrderProductsMapper";
 import { OrderProductNotFoundException } from "@modules/OrderProduct/exceptions/OrderProductNotFoundException";
+import { IOrderProductsRepository } from "@modules/OrderProduct/repositories/IOrderProductsRepository";
 
 
 class OrderProductsRepositoryInMemory implements IOrderProductsRepository {

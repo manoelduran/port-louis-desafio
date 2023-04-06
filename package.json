@@ -8,6 +8,7 @@
     "typeorm": "ts-node -r tsconfig-paths/register ./node_modules/typeorm/cli.js",
     "seed": "ts-node-dev -r tsconfig-paths/register src/shared/infra/typeorm/seeds/MainSeeder.ts",
     "docker:migration:run": "docker exec -it portlouis yarn typeorm migration:run --dataSource=./ormconfig.ts",
+    "tsc": "tsc --noEmit",
     "docker:seed": "docker exec -it portlouis yarn seed -d ormconfig.js",
     "test": "NODE_ENV=test jest"
   },
