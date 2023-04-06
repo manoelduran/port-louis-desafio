@@ -11,8 +11,8 @@ class DeleteInvoiceOrderService {
         @inject("InvoiceOrdersRepository")
         private invoiceOrdersRepository: IInvoiceOrdersRepository,
     ) { }
-    async execute({ item_number }: DeleteInvoiceOrderDTO): Promise<InvoiceOrderNotFoundException | void> {
-        const InvoiceOrderExists = await this.invoiceOrdersRepository.findByItemNumber(item_number);
+    async execute({ id }: DeleteInvoiceOrderDTO): Promise<InvoiceOrderNotFoundException | void> {
+        const InvoiceOrderExists = await this.invoiceOrdersRepository.findById(id);
         if (!InvoiceOrderExists) {
             throw new InvoiceOrderNotFoundException();
         };

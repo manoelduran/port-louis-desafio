@@ -22,6 +22,7 @@ class CreateInvoiceOrderService {
         private ordersRepository: IOrdersRepository
     ) { }
     async execute(data: CreateInvoiceOrderDTO): Promise<InvoiceNotFoundException | OrderNotFoundException | InvoiceOrderAlreadyExistsException | InvoiceOrder> {
+        console.log('data', data)
         const InvoiceExists = await this.invoicesRepository.findById(data.invoice_id);
 
         if (InvoiceExists instanceof InvoiceNotFoundException) {
@@ -32,11 +33,12 @@ class CreateInvoiceOrderService {
         if (orderAlreadyExists instanceof OrderNotFoundException) {
             throw new InvoiceOrderAlreadyExistsException();
         };
-        const InvoiceordersAlreadyExists = await this.invoiceOrdersRepository.findByItemNumber(data.numero_item);
-
+       /* const InvoiceordersAlreadyExists = await this.invoiceOrdersRepository.findById(data.id);
+        console.log('InvoiceordersAlreadyExists', InvoiceordersAlreadyExists)
         if (InvoiceordersAlreadyExists instanceof InvoiceOrder) {
             throw new InvoiceOrderAlreadyExistsException();
-        };
+        };*/
+    
         const newInvoiceOrder = await this.invoiceOrdersRepository.create(data);
 
         return newInvoiceOrder;

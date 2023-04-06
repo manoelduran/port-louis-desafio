@@ -11,8 +11,8 @@ class ShowInvoiceOrderService {
         @inject("InvoiceOrdersRepository")
         private invoiceOrdersRepository: IInvoiceOrdersRepository,
     ) { }
-    async execute({ item_number }: ShowInvoiceOrderDTO): Promise<InvoiceOrderNotFoundException | InvoiceOrder> {
-        const invoiceOrderExists = await this.invoiceOrdersRepository.findByItemNumber(item_number);
+    async execute({ id }: ShowInvoiceOrderDTO): Promise<InvoiceOrderNotFoundException | InvoiceOrder> {
+        const invoiceOrderExists = await this.invoiceOrdersRepository.findById(id);
         if (!invoiceOrderExists) {
             throw new InvoiceOrderNotFoundException();
         };

@@ -1,6 +1,6 @@
 
 import { injectable } from "tsyringe";
-import { Repository, } from "typeorm";
+import { Repository, QueryBuilder } from "typeorm";
 import { PostgresDataSource } from "../../../../../../ormconfig";
 import { InvoiceOrderNotFoundException } from "@modules/InvoiceOrder/exceptions/InvoiceOrderNotFoundException";
 import { InvoiceOrder } from "../entity/InvoiceOrder";
@@ -22,11 +22,11 @@ class InvoiceOrdersRepository implements IInvoiceOrdersRepository {
         await this.save(newInvoiceOrders);
         return newInvoiceOrders;
     };
-    async findByItemNumber(item_number: number): Promise<InvoiceOrder | InvoiceOrderNotFoundException> {
+    async findById(id: string): Promise<InvoiceOrder | InvoiceOrderNotFoundException> {
 
         const foundInvoiceOrders = await this.ormRepository.findOne({
             where: {
-                item_number: item_number
+                id: id
             }
         });
         if (foundInvoiceOrders instanceof InvoiceOrderNotFoundException) {
@@ -45,7 +45,7 @@ class InvoiceOrdersRepository implements IInvoiceOrdersRepository {
         };
         return foundInvoiceOrders;
     };
-    async findByInvoiceId(invoice_id: string): Promise<InvoiceOrder | InvoiceOrderNotFoundException> {
+    async findByInvoiceId(invoice_id: string): Promise<InvoiceOrderNotFoundException | InvoiceOrder  > {
         const foundInvoiceOrders = await this.ormRepository.findOne({
             where: {
                 invoice_id: invoice_id
@@ -56,6 +56,29 @@ class InvoiceOrdersRepository implements IInvoiceOrdersRepository {
         };
         return foundInvoiceOrders;
     };
+    async findProductQuantitySumByItemNumber(invoices: InvoiceOrder[]): Promise<{ item_number: number, product_quantity: number }[]> {
+        const result = await this.ormRepository.createQueryBuilder('invoiceorders')
+          .select('invoiceorders.item_number', 'item_number')
+          .addSelect('SUM(invoiceorders.product_quantity)', 'product_quantity')
+          .groupBy('invoiceorders.item_number')
+          .orderBy('invoiceorders.item_number')
+          .whereInIds(invoices)
+          .getRawMany();
+        return result.map(row => ({ item_number: row.item_number, product_quantity: parseInt(row.product_quantity) }));
+      }
+    async findByOrderIdAndItemNumber(item_number: number, order_id: string): Promise<InvoiceOrderNotFoundException | InvoiceOrder> {
+        const invoiceOrdersOrError = await this.ormRepository.findOne({
+            where: {
+                item_number,
+                order_id
+            }
+        });
+        if (invoiceOrdersOrError instanceof InvoiceOrderNotFoundException) {
+            throw new InvoiceOrderNotFoundException()
+        };
+        return invoiceOrdersOrError;
+
+    }
     async list(): Promise<InvoiceOrder[]> {
         return this.ormRepository.find();
     };

@@ -24,7 +24,7 @@ class CreateOrderProductService {
     async execute(data: CreateOrderProductDTO): Promise<ProductNotFoundException | OrderNotFoundException | OrderProductAlreadyExistsException | OrderProduct> {
         const productExists = await this.productsRepository.findByProductCode(data.codigo_produto);
 
-        if (productExists instanceof ProductNotFoundException) {
+        if (!productExists ) {
             throw new ProductNotFoundException();
         };
         const orderAlreadyExists = await this.ordersRepository.findById(data.pedido_id);

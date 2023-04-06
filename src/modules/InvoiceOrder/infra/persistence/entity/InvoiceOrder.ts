@@ -6,7 +6,7 @@ import { Column, CreateDateColumn, Entity, JoinColumn, ManyToOne, PrimaryColumn,
 class InvoiceOrder {
     @PrimaryGeneratedColumn('uuid')
     id?: string;
-    @Column({type: 'integer', nullable: false, unique: true})
+    @Column({type: 'integer', nullable: false})
     item_number: number;
     @Column({ type: 'varchar', nullable: false, unique: true })
     order_id: string;

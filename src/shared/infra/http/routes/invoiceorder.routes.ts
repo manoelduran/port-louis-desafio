@@ -18,24 +18,25 @@ invoiceOrderRoutes.post("/", celebrate({
 }),
   invoiceOrderController.create
 );
-
+invoiceOrderRoutes.get("/pendingorders", invoiceOrderController.GeneratePendingOrders)
+invoiceOrderRoutes.get("/filteredlist", invoiceOrderController.listByOrderIdAndItemNumber)
 invoiceOrderRoutes.get("/", invoiceOrderController.list)
 
 invoiceOrderRoutes.get(
-  '/:numero_item/show',
+  '/:id/show',
   celebrate({
     [Segments.PARAMS]: {
-      numero_item: Joi.number().positive().integer().required(),
+      id: Joi.string().uuid().required(),
     },
   }),
   invoiceOrderController.show
 );
 
 invoiceOrderRoutes.delete(
-  '/:numero_item',
+  '/:id',
   celebrate({
     [Segments.PARAMS]: {
-      numero_item: Joi.number().positive().integer().required(),
+      id: Joi.string().uuid().required(),
     },
   }),
   invoiceOrderController.delete

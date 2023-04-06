@@ -17,6 +17,7 @@ export class CreateInvoiceOrders1680687679737 implements MigrationInterface {
                     name: "item_number",
                     type: "integer",
                     isNullable: false,
+                    isUnique: false
                 },
                 {
                     name: "order_id",

@@ -1,5 +1,5 @@
 
 interface DeleteInvoiceOrderDTO {
-    item_number: number;
+    id: string;
     };
     export {DeleteInvoiceOrderDTO};
