@@ -16,7 +16,7 @@
       ],
       "@errors/*": [
         "errors/*"
-      ],
+      ]
     },
     "resolveJsonModule": true,
     "esModuleInterop": true,

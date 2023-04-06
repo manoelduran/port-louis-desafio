@@ -10,7 +10,7 @@
     "docker:migration:run": "docker exec -it portlouis yarn typeorm migration:run --dataSource=./ormconfig.ts",
     "tsc": "tsc --noEmit",
     "docker:seed": "docker exec -it portlouis yarn seed -d ormconfig.js",
-    "test": "NODE_ENV=test jest"
+    "test": "jest"
   },
   "dependencies": {
     "celebrate": "^15.0.1",
@@ -28,6 +28,7 @@
     "uuid": "^9.0.0"
   },
   "devDependencies": {
+    "@jest/globals": "^29.5.0",
     "@types/cors": "^2.8.13",
     "@types/express": "^4.17.17",
     "@types/jest": "^29.5.0",
