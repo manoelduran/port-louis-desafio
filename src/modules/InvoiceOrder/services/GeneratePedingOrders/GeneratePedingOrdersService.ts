@@ -69,23 +69,20 @@ class GeneratePedingOrdersService {
             return accumulator;
         }, []);
 
-        filteredInvoicesByItemNumber.forEach((filteredinvoice) => {
-            filteredOrders.forEach((filteredOrder) => {
-                if (filteredinvoice.product_quantity > filteredOrder.product_quantity) {
-                    console.log('Error! InvoiceOrders product quantity is greater than of the order!')
+        for (const filteredOrder of filteredOrders) {
+            for (const filteredInvoiceByItemNumber of filteredInvoicesByItemNumber) {
+              if (filteredOrder.item_number === filteredInvoiceByItemNumber.item_number && filteredOrder.order_id === filteredInvoiceByItemNumber.order_id) {
+                if (filteredOrder.product_quantity > filteredInvoiceByItemNumber.product_quantity) {
+                  const saldo_quantidade = filteredOrder.product_quantity - filteredInvoiceByItemNumber.product_quantity;
+                  total_value += saldo_quantidade
+                  value_total_order += filteredOrder.total_value
+                  pendingProducts.push({ numero_item: filteredOrder.item_number, saldo_quantidade, order_id: filteredOrder.order_id });
                 }
-                if (filteredinvoice.product_quantity < filteredOrder.product_quantity) {
-                    const pendingOrder = {
-                        numero_item: filteredOrder.item_number,
-                        order_id: filteredOrder.order_id,
-                        saldo_quantidade: filteredOrder.product_quantity - filteredinvoice.product_quantity
-                    } as PendingProduct
-                    total_value += pendingOrder.saldo_quantidade
-                    value_total_order += filteredOrder.total_value
-                    pendingProducts.push(pendingOrder)
-                }
-            });
-        })
+                console.log('Error! InvoiceOrders product quantity is greater than of the order!')
+                break;
+              }
+            }
+          }
         pendingOrders = {
             valor_total_pedido: value_total_order,
             saldo_valor: total_value,
