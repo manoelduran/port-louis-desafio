@@ -7,6 +7,7 @@ import { ProductMapper } from "@modules/Product/mapper/ProductMapper";
 import { ProductNotFoundException } from "@modules/Product/exceptions/ProductNotFound";
 import { Product } from "@modules/Product/infra/persistence/entity/Product";
 import { IProductsRepository } from "@modules/Product/repositories/IProductsRepository";
+import { OrderProduct } from "@modules/OrderProduct/infra/persistence/entity/OrderProduct";
 
 @injectable()
 class ProductsRepository implements IProductsRepository {
@@ -35,6 +36,25 @@ class ProductsRepository implements IProductsRepository {
         console.log('foundProduct', foundProduct)
         return foundProduct;
     };
+
+   async addUnitValueToOrderProduct(data: OrderProduct): Promise<{
+    item_number: number;
+    order_id: string;
+    product_quantity: number;
+    product_code: string;
+    unit_value: number;
+  }> {
+    const orderProductWithUnitValue = await this.ormRepository.createQueryBuilder("products")
+    .where("products.product_code = :product_code", {
+      product_code: data.product_code,
+    })
+    .getOne();
+
+  return {
+    ...data,
+    unit_value: orderProductWithUnitValue.unit_value,
+  };
+   }
     async list(): Promise<Product[]> {
         return this.ormRepository.find();
     };

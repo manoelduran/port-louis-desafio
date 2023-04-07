@@ -1,6 +1,6 @@
 
 interface DeleteOrderProductDTO {
-    item_number: number;
+    id?: string;
 };
 
 export { DeleteOrderProductDTO };

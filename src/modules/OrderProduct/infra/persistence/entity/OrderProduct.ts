@@ -1,10 +1,12 @@
 import { Order } from "@modules/Order/infra/persistence/entity/Order";
 import { Product } from "@modules/Product/infra/persistence/entity/Product";
-import { Column, CreateDateColumn, Entity, JoinColumn, JoinTable, ManyToMany, ManyToOne, PrimaryColumn, UpdateDateColumn } from "typeorm";
+import { Column, CreateDateColumn, Entity, JoinColumn, JoinTable, ManyToMany, ManyToOne, PrimaryColumn, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
 
 @Entity("orderproducts")
 class OrderProduct {
-    @PrimaryColumn({type: 'integer', nullable: false, unique: true})
+    @PrimaryGeneratedColumn('uuid')
+    id?: string;
+    @Column({type: 'integer', nullable: false, unique: true})
     item_number: number;
     @Column({ type: 'varchar'})
     order_id: string;

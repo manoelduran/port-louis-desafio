@@ -1,6 +1,7 @@
 import { Invoice } from "@modules/Invoice/infra/persistence/entity/Invoice";
 import { Order } from "@modules/Order/infra/persistence/entity/Order";
 import { CreateOrderProductDTO } from "@modules/OrderProduct/dtos/CreateOrderProductDTO";
+import { OrderProduct } from "@modules/OrderProduct/infra/persistence/entity/OrderProduct";
 
 
 export class FileHelper {
@@ -47,4 +48,7 @@ export class FileHelper {
             return file;
         }
     }
+    static removeNull(array: OrderProduct[]) {
+        return array.filter(item => item !== null);
+      }
 }

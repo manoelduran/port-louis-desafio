@@ -14,12 +14,13 @@ class DeleteOrderProductService {
         @inject("OrderProductsRepository")
         private orderProductsRepository: IOrderProductsRepository
     ) { }
-    async execute({ item_number }: DeleteOrderProductDTO): Promise<OrderProductNotFoundException | void> {
-        const orderExists = await this.orderProductsRepository.findByItemNumber(item_number);
+    async execute({ id }: DeleteOrderProductDTO): Promise<OrderProductNotFoundException | void> {
+        const orderExists = await this.orderProductsRepository.findById(id);
+        console.log('orderExists', orderExists)
         if (!orderExists) {
             throw new OrderProductNotFoundException();
         };
-        await this.orderProductsRepository.delete(item_number);
+        await this.orderProductsRepository.delete(orderExists as OrderProduct);
     };
 };
 

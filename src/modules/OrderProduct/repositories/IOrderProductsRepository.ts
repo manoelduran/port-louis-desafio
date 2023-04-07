@@ -6,11 +6,12 @@ import { CreateOrderProductDTO } from "../dtos/CreateOrderProductDTO";
 
 interface IOrderProductsRepository {
     create(txtData: CreateOrderProductDTO): Promise<OrderProduct>;
-    findByItemNumber(item_number: number): Promise<OrderProductNotFoundException | OrderProduct>;
+    findById(id: string): Promise<OrderProductNotFoundException | OrderProduct>;
     findByOrderId(order_id: string): Promise<OrderProductNotFoundException | OrderProduct>;
     findByProductCode(product_code: string): Promise<OrderProductNotFoundException | OrderProduct>;
-    delete(item_number: number): Promise<void>;
+    delete(orderProduct: OrderProduct): Promise<void>;
     list(): Promise<OrderProduct[]>;
+    findOrderProductsByOrderIdAndItemNumber(item_number: number, order_id: string): Promise<{ item_number: number, order_id: string, product_quantity: number, product_code: string }>
     save(data: OrderProduct): Promise<OrderProduct>;
 };
 

@@ -19,4 +19,6 @@
                 5.2 Para escutar o container do seu app execute: docker logs portlouis -f;
                 5.3 Para rodar as migrations execute o comando: yarn docker:migration:run;
                 5.3 Para alimentar o banco de dados com os arquivos fornecidos de notas e pedidos execute o comando do seed: yarn docker:seed;
+                5.4 Para dropar o banco rodar o comando: yarn docker:schema:drop;
+                5.5 Para gerar os pedidos pendentes rodar a rota de InvoiceOrder - PendingOrders - {{ _.baseURL }}/invoiceorders/pendingorders
 }

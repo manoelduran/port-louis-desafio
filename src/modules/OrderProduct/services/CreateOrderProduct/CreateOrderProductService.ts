@@ -21,7 +21,7 @@ class CreateOrderProductService {
         @inject("OrdersRepository")
         private ordersRepository: IOrdersRepository
     ) { }
-    async execute(data: CreateOrderProductDTO): Promise<ProductNotFoundException | OrderNotFoundException | OrderProductAlreadyExistsException | OrderProduct> {
+    async execute(data: CreateOrderProductDTO): Promise<ProductNotFoundException | OrderNotFoundException  | OrderProduct> {
         const productExists = await this.productsRepository.findByProductCode(data.codigo_produto);
 
         if (!productExists ) {
@@ -30,11 +30,6 @@ class CreateOrderProductService {
         const orderAlreadyExists = await this.ordersRepository.findById(data.pedido_id);
 
         if (orderAlreadyExists instanceof OrderNotFoundException) {
-            throw new OrderProductAlreadyExistsException();
-        };
-        const orderProductsAlreadyExists = await this.orderProductsRepository.findByItemNumber(data.numero_item);
-
-        if (orderProductsAlreadyExists instanceof OrderProduct) {
             throw new OrderProductAlreadyExistsException();
         };
         const newOrderProduct = await this.orderProductsRepository.create(data);

@@ -3,12 +3,17 @@ import { Product } from "@modules/Product/infra/persistence/entity/Product";
 import { ProductNotFoundException } from "@modules/Product/exceptions/ProductNotFound";
 import { CreateProductDTO } from "@modules/Product/dtos/CreateProductDTO";
 import { ProductMapper } from "@modules/Product/mapper/ProductMapper";
+import { orderProductWithUnitValue } from "@modules/InvoiceOrder/services/GeneratePedingOrders/GeneratePedingOrdersService";
+import { OrderProduct } from "@modules/OrderProduct/infra/persistence/entity/OrderProduct";
 
 
 class ProductsRepositoryInMemory implements IProductsRepository {
     private products: Product[];
     constructor() {
         this.products = [];
+    }
+    addUnitValueToOrderProduct(data: OrderProduct): Promise<orderProductWithUnitValue> {
+        throw new Error("Method not implemented.");
     }
     async create(data: CreateProductDTO): Promise<Product> {
         const newProduct = new Product();

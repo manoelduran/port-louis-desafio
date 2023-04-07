@@ -11,6 +11,12 @@ class OrderProductsRepositoryInMemory implements IOrderProductsRepository {
     constructor() {
         this.orderProducts = [];
     }
+    findById(id: string): Promise<OrderProduct | OrderProductNotFoundException> {
+        throw new Error("Method not implemented.");
+    }
+    findOrderProductsByOrderIdAndItemNumber(item_number: number, order_id: string): Promise<{ item_number: number; order_id: string; product_quantity: number; product_code: string; }> {
+        throw new Error("Method not implemented.");
+    }
     async create(data: CreateOrderProductDTO): Promise<OrderProduct> {
         const newOrderProduct = new OrderProduct();
         Object.assign(newOrderProduct, OrderProductsMapper.toPersistence(data));
@@ -46,9 +52,9 @@ class OrderProductsRepositoryInMemory implements IOrderProductsRepository {
         const orderProducts = this.orderProducts;
         return orderProducts;
     };
-    async delete(item_number: number): Promise<void> {
-        const orderProduct = this.orderProducts.filter(order => order.item_number !== item_number);
-        this.orderProducts = orderProduct;
+    async delete(orderProduct: OrderProduct): Promise<void> {
+        const removedOrderProduct = this.orderProducts.filter(order => order.id !== orderProduct.id);
+        this.orderProducts = removedOrderProduct;
     };
 
 };

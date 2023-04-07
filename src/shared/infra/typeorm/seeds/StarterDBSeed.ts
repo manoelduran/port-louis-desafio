@@ -16,7 +16,6 @@ import { OrderProductsMapper } from '@modules/OrderProduct/mapper/OrderProductsM
 import { ProductMapper } from '@modules/Product/mapper/ProductMapper';
 import { OrderProduct } from '@modules/OrderProduct/infra/persistence/entity/OrderProduct';
 import { Product } from '@modules/Product/infra/persistence/entity/Product';
-import { CreateOrderProductDTO } from '@modules/OrderProduct/dtos/CreateOrderProductDTO';
 import { InvoiceMapper } from '@modules/Invoice/mapper/InvoiceMapper';
 import { InvoiceOrder } from '@modules/InvoiceOrder/infra/persistence/entity/InvoiceOrder';
 import { InvoiceOrdersMapper } from '@modules/InvoiceOrder/mapper/InvoiceOrdersMapper';

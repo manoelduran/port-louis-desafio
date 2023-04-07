@@ -14,19 +14,21 @@ class ListInvoiceOrdersByOrderIdAndItemNumberService {
     ) { }
     async execute(): Promise<InvoiceOrderNotFoundException | InvoiceOrder[]> {
         let filteredInvoiceOrders: InvoiceOrder[] = [];
-        const orderProducts = await this.orderProductsRepository.list();
-        console.log('orderProducts', orderProducts)
-       const response = await Promise.all(
-             orderProducts.map(async orderProduct => {
-                const InvoiceordersAlreadyExists = await this.invoiceOrdersRepository.findByOrderIdAndItemNumber(orderProduct.item_number, orderProduct.order_id);
+        const invoiceOrders = await this.invoiceOrdersRepository.list();
+        console.log('InvoiceordersAlreadyExists', invoiceOrders.length)
+       await Promise.all(
+        invoiceOrders.map(async invoiceOrder => {
+                const InvoiceordersAlreadyExists = await this.invoiceOrdersRepository.findByOrderIdAndItemNumber(invoiceOrder.item_number, invoiceOrder.order_id);
                 if (InvoiceordersAlreadyExists instanceof InvoiceOrderNotFoundException) {
                     throw new InvoiceOrderNotFoundException();
                 };
-
+                if(InvoiceordersAlreadyExists === true) {
+                    console.log('InvoiceordersAlreadyExists', InvoiceordersAlreadyExists)
+                    filteredInvoiceOrders.push(invoiceOrder)
+                }
                 return InvoiceordersAlreadyExists
             })
         );
-        filteredInvoiceOrders = response.filter(orderProduct => orderProduct instanceof InvoiceOrder)
         return filteredInvoiceOrders;
 
     };

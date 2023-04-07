@@ -56,28 +56,24 @@ class InvoiceOrdersRepository implements IInvoiceOrdersRepository {
         };
         return foundInvoiceOrders;
     };
-    async findProductQuantitySumByItemNumber(invoices: InvoiceOrder[]): Promise<{ item_number: number, product_quantity: number }[]> {
-        const result = await this.ormRepository.createQueryBuilder('invoiceorders')
-          .select('invoiceorders.item_number', 'item_number')
-          .addSelect('SUM(invoiceorders.product_quantity)', 'product_quantity')
-          .groupBy('invoiceorders.item_number')
-          .orderBy('invoiceorders.item_number')
+    async filterInvoiceOrdersByOrderId(invoices: InvoiceOrder[]): Promise<{ item_number: number, product_quantity: number, order_id: string }[]> {
+        const invoiceOrdersResult = await this.ormRepository.createQueryBuilder('invoiceorders')
+          .select('invoiceorders.order_id', 'order_id')
+          .addSelect('invoiceorders.item_number', 'item_number')
+          .addSelect('invoiceorders.product_quantity', 'product_quantity')
           .whereInIds(invoices)
           .getRawMany();
-        return result.map(row => ({ item_number: row.item_number, product_quantity: parseInt(row.product_quantity) }));
+        return invoiceOrdersResult.map(row => ({item_number: row.item_number, product_quantity: row.product_quantity, order_id: row.order_id}));
       }
-    async findByOrderIdAndItemNumber(item_number: number, order_id: string): Promise<InvoiceOrderNotFoundException | InvoiceOrder> {
-        const invoiceOrdersOrError = await this.ormRepository.findOne({
-            where: {
-                item_number,
-                order_id
-            }
-        });
-        if (invoiceOrdersOrError instanceof InvoiceOrderNotFoundException) {
+    async findByOrderIdAndItemNumber(item_number: number, order_id: string): Promise<InvoiceOrderNotFoundException | boolean> {
+        const query = await this.ormRepository.createQueryBuilder('invoiceorders')
+        .where('invoiceorders.order_id = :order_id', { order_id })
+        .andWhere('invoiceorders.item_number = :item_number', { item_number })
+        .getCount();
+        if(query === 0) {
             throw new InvoiceOrderNotFoundException()
-        };
-        return invoiceOrdersOrError;
-
+        }
+      return query > 0;
     }
     async list(): Promise<InvoiceOrder[]> {
         return this.ormRepository.find();

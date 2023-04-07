@@ -21,20 +21,20 @@ orderProductRoutes.post("/", celebrate({
 orderProductRoutes.get("/", orderProductController.list)
 
 orderProductRoutes.get(
-  '/:numero_item/show',
+  '/:id/show',
   celebrate({
     [Segments.PARAMS]: {
-      numero_item: Joi.number().positive().integer().required(),
+      id: Joi.string().uuid().required(),
     },
   }),
   orderProductController.show
 );
 
 orderProductRoutes.delete(
-  '/:numero_item',
+  '/:id',
   celebrate({
     [Segments.PARAMS]: {
-      numero_item: Joi.number().positive().integer().required(),
+      id: Joi.string().uuid().required(),
     },
   }),
   orderProductController.delete

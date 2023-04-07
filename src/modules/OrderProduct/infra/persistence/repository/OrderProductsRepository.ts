@@ -23,11 +23,11 @@ class OrderProductsRepository implements IOrderProductsRepository {
         await this.save(newOrderProducts);
         return newOrderProducts;
     };
-    async findByItemNumber(item_number: number): Promise<OrderProduct | OrderProductNotFoundException> {
+    async findById(id: string): Promise<OrderProductNotFoundException | OrderProduct> {
 
         const foundOrderProducts = await this.ormRepository.findOne({
             where: {
-                item_number: item_number
+                id: id
             }
         });
         if (foundOrderProducts instanceof OrderProductNotFoundException) {
@@ -57,11 +57,24 @@ class OrderProductsRepository implements IOrderProductsRepository {
         };
         return foundOrderProducts;
     };
+    async findOrderProductsByOrderIdAndItemNumber(item_number: number, order_id: string): Promise<{ item_number: number, order_id: string, product_quantity: number, product_code: string }> {
+        const queryBuilder =  this.ormRepository.createQueryBuilder("orderproducts")
+        .select(["orderproducts.order_id", "orderproducts.item_number", "orderproducts.product_quantity", "orderproducts.product_code"])
+        .where("orderproducts.item_number = :item_number", { item_number })
+        .andWhere("orderproducts.order_id = :order_id", { order_id });
+        try {
+            const result = await queryBuilder.getOne();
+            return result;
+          } catch (error) {
+            console.error(`Error fetching order product for item number ${item_number} and order id ${order_id}: ${error.message}`);
+            return undefined;
+          }
+        }
     async list(): Promise<OrderProduct[]> {
         return this.ormRepository.find();
     };
-    async delete(item_number: number): Promise<void> {
-         this.ormRepository.delete(item_number);
+    async delete(orderProduct: OrderProduct): Promise<void> {
+        this.ormRepository.delete(orderProduct.id);
 
     };
 };

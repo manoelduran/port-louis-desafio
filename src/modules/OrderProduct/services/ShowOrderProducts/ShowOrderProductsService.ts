@@ -11,8 +11,8 @@ class ShowOrderProductsService {
         @inject("OrderProductsRepository")
         private orderProductsRepository: IOrderProductsRepository
     ) { }
-    async execute({ item_number }: ShowOrderProductDTO): Promise<OrderProductNotFoundException | OrderProduct> {
-        const orderProductExists = await this.orderProductsRepository.findByItemNumber(item_number);
+    async execute({ id }: ShowOrderProductDTO): Promise<OrderProductNotFoundException | OrderProduct> {
+        const orderProductExists = await this.orderProductsRepository.findById(id);
         if (!orderProductExists) {
             throw new OrderProductNotFoundException();
         };

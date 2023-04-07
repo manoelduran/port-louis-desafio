@@ -35,10 +35,10 @@ class OrderProductController {
         return response.status(201).json(instanceToInstance(orderProduct));
     };
     public async delete(request: Request, response: Response): Promise<Response> {
-        const { numero_item } = request.params;
+        const { id } = request.params;
         const deleteOrderProductService = container.resolve(DeleteOrderProductService);
 
-        const orderProductOrError = await deleteOrderProductService.execute({ item_number: Number(numero_item) });
+        const orderProductOrError = await deleteOrderProductService.execute({ id: id });
         if (orderProductOrError instanceof  OrderProductNotFoundException) {
             throw new OrderProductNotFoundException();
         };
@@ -46,9 +46,9 @@ class OrderProductController {
         return response.status(204).send('Order Product Deleted!');
     };
     public async show(request: Request, response: Response): Promise<Response> {
-        const { numero_item } = request.params;
+        const { id } = request.params;
         const showOrderProductsService = container.resolve(ShowOrderProductsService);
-        const orderProductOrError = await showOrderProductsService.execute({ item_number: Number(numero_item) });
+        const orderProductOrError = await showOrderProductsService.execute({ id: id });
         if (orderProductOrError instanceof OrderProductNotFoundException) {
             throw new OrderProductNotFoundException();
         };

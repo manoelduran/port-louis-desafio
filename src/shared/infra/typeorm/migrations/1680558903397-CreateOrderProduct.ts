@@ -7,11 +7,16 @@ export class CreateOrderProduct1680558903397 implements MigrationInterface {
             name: "orderproducts",
             columns: [
                 {
+                    name: "id",
+                    type: "uuid",
+                    isPrimary: true,
+                    generationStrategy: 'uuid',
+                    default: 'uuid_generate_v4()',
+                },
+                {
                     name: "item_number",
                     type: "integer",
                     isNullable: false,
-                    isPrimary: true,
-                    isUnique: true
                 },
                 {
                     name: "order_id",

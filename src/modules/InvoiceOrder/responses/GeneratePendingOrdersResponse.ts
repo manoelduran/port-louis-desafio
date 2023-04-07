@@ -1,7 +1,8 @@
 import { Product } from "@modules/Product/infra/persistence/entity/Product";
 
-interface PendingProduct {
+export interface PendingProduct {
 numero_item: number;
+order_id: string;
 saldo_quantidade: number;
 }
 
