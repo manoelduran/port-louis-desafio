@@ -80,7 +80,6 @@ export default class StarterDBSeed implements Seeder {
           ..._item,
           valor_unitario_produto: Number(_item.valor_unitario_produto.replace(",", "."))
         }
-        console.log('item', item)
         const formattedFile = FileHelper.removeTxtExtension(file)
         const toPersistenceOrderProject = OrderProductsMapper.toPersistence({ ...item, pedido_id: formattedFile });
         const toPersistenceOrder = OrderMapper.toPersistence({ id: toPersistenceOrderProject.order_id });

@@ -12,9 +12,7 @@ import StarterDBSeed from './StarterDBSeed';
     await PostgresDataSource.initialize();
     await runSeeder(PostgresDataSource, StarterDBSeed);
 })().then(() => {
-    console.log('ola')
     process.exit(0)
 }).catch(e => {
-    console.log('e', e)
     process.exit(1)
 })

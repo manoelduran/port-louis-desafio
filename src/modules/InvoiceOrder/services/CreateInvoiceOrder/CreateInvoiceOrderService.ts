@@ -21,7 +21,6 @@ class CreateInvoiceOrderService {
         private ordersRepository: IOrdersRepository
     ) { }
     async execute(data: CreateInvoiceOrderDTO): Promise<InvoiceNotFoundException | OrderNotFoundException  | InvoiceOrder> {
-        console.log('data', data)
         const InvoiceExists = await this.invoicesRepository.findById(data.invoice_id);
 
         if (InvoiceExists instanceof InvoiceNotFoundException) {

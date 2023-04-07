@@ -33,7 +33,6 @@ class ProductsRepository implements IProductsRepository {
         if (foundProduct instanceof ProductNotFoundException) {
             throw new ProductNotFoundException();
         };
-        console.log('foundProduct', foundProduct)
         return foundProduct;
     };
 

@@ -16,7 +16,6 @@ class DeleteOrderProductService {
     ) { }
     async execute({ id }: DeleteOrderProductDTO): Promise<OrderProductNotFoundException | void> {
         const orderExists = await this.orderProductsRepository.findById(id);
-        console.log('orderExists', orderExists)
         if (!orderExists) {
             throw new OrderProductNotFoundException();
         };
